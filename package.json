@@ -1,0 +1,16 @@
+{
+    "name": "serverless-data-mapping",
+    "version": "1.0.0",
+    "description": "serverless data mapping",
+    "scripts": {
+        "bootstrap:local": "lerna exec npm i",
+        "lint:local": "lerna run lint:local",
+        "lint:fix": "lerna run lint:fix",
+        "test": "lerna run test",
+        "postinstall": "is-ci || (husky install && husky add .husky/pre-commit \"npm run lint:local\" && husky add .husky/pre-commit \"npm run lint:fix\")"
+    },
+    "devDependencies": {
+        "husky": "^8.0.2",
+        "lerna": "^7.1.0"
+    }
+}
