@@ -19,7 +19,7 @@ module "lambda_function" {
   handler       = "handler.handler"
   runtime       = "node18"
 
-  source_path = "../functions/dataMapping/src"
+  source_path = "../functions/dataMapping"
 
   tags = {
     Name = "data-mapping"
