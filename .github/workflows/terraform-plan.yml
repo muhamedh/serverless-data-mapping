@@ -21,7 +21,7 @@ jobs:
       - run: npm run bootstrap:local
       - run: npm run test
   terraform:
-    if: github.repository != 'muhamedh/serverless-data-mapping'
+    if: github.repository == 'muhamedh/serverless-data-mapping'
     name: "Terraform Plan"
     runs-on: ubuntu-latest
     permissions:
