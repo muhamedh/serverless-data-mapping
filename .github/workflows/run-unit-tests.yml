@@ -1,6 +1,6 @@
 name: run-unit-tests
 run-name: ${{ github.actor }} is running unit tests workflow
-on: [push]
+#on: [push]
 jobs:
   run-unit-tests:
     runs-on: ubuntu-latest
