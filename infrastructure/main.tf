@@ -11,17 +11,17 @@ terraform {
   required_version = ">= 1.1.0"
 }
 
-module "lambda_function" {
-  source = "terraform-aws-modules/lambda/aws"
-  version = "5.0.0"
-  function_name = "data-mapping"
-  description   = "Data mapping Lambda"
-  handler       = "handler.handler"
-  runtime       = "node18"
+# module "lambda_function" {
+#   source = "terraform-aws-modules/lambda/aws"
+#   version = "5.0.0"
+#   function_name = "data-mapping"
+#   description   = "Data mapping Lambda"
+#   handler       = "handler.handler"
+#   runtime       = "node18"
 
-  source_path = "./dataMappingSymlink"
+#   source_path = "../functions/dataMapping"
 
-  tags = {
-    Name = "data-mapping"
-  }
-}
+#   tags = {
+#     Name = "data-mapping"
+#   }
+# }
