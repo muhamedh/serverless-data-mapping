@@ -17,7 +17,8 @@ terraform {
 
 module "lambda_function" {
   source = "terraform-aws-modules/lambda/aws"
-
+  version = "4.18.0"
+  
   function_name = "data-mapping"
   description   = "Data mapping Lambda"
   handler       = "handler.handler"
