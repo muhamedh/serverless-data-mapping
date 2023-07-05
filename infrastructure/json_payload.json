@@ -1,0 +1,17 @@
+{
+  "data": {
+    "attributes": {
+      "message": "Run trigerred from CI- serverless-data-mapping project",
+      "auto-apply": true
+    },
+    "type": "runs",
+    "relationships": {
+      "workspace": {
+        "data": {
+          "type": "workspaces",
+          "id": "ws-YaTg8aSkZgx49F6r" 
+        }
+      }
+    }
+  }
+}
