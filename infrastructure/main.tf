@@ -26,7 +26,7 @@ module "lambda_function" {
   function_name = "data-mapping"
   description   = "Data mapping Lambda"
   handler       = "handler.handler"
-  runtime       = "node18"
+  runtime       = "node18.x"
 
   source_path = "../functions/dataMapping/src"
 
