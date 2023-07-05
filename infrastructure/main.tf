@@ -5,7 +5,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "4.63.0" 
+      version = "5.6.2" 
     }
     random = {
       source  = "hashicorp/random"
@@ -21,7 +21,7 @@ provider "aws" {
 
 module "lambda_function" {
   source = "terraform-aws-modules/lambda/aws"
-  version = "4.18.0"
+  version = "5.2.0"
 
   function_name = "data-mapping"
   description   = "Data mapping Lambda"
