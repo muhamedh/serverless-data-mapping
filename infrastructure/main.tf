@@ -15,6 +15,10 @@ terraform {
   required_version = ">= 1.1.0"
 }
 
+provider "aws" {
+  region = "us-east-1"
+}
+
 module "lambda_function" {
   source = "terraform-aws-modules/lambda/aws"
 
