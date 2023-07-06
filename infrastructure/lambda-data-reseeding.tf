@@ -1,4 +1,4 @@
-module "lambda_function" "data-reseeding" {
+module "data_reseeding" {
   source = "terraform-aws-modules/lambda/aws"
   version = "5.2.0"
 

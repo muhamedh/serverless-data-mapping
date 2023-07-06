@@ -1,4 +1,4 @@
-module "lambda_function" "data-validator" {
+module "data_validator" {
   source = "terraform-aws-modules/lambda/aws"
   version = "5.2.0"
 

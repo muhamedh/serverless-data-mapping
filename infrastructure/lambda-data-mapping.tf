@@ -1,4 +1,4 @@
-module "lambda_function" "data-mapping" {
+module "data_mapping" {
   source = "terraform-aws-modules/lambda/aws"
   version = "5.2.0"
 
