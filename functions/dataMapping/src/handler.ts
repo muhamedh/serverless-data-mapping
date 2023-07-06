@@ -1,5 +1,5 @@
 const handler = (() => {
-    return 'hello';
+    return 'hello world';
 });
 
 export { handler };    

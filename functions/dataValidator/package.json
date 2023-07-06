@@ -1,7 +1,7 @@
 {
-  "name": "formatvalidator",
+  "name": "datavalidator",
   "version": "1.0.0",
-  "description": "Format Validator function",
+  "description": "Data Validator function",
   "main": "handler.ts",
   "scripts": {
     "test": "jest",

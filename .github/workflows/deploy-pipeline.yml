@@ -15,7 +15,27 @@ jobs:
           node-version: '18'
       - run: npm run bootstrap:local
       - run: npm run test
-      - name: Update SSM and trigger TFC run
+  transpile-lambdas:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Build lambdas
+        run: |
+          cd functions/dataMapping
+          npm run build
+  deploy-service:
+    needs: ['run-unit-tests','transpile-lambdas']
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Trigger TFC run
         env:
           tfc_token: ${{ secrets.TF_API_TOKEN }}
         run: |

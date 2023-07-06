@@ -5,7 +5,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "4.63.0" 
+      version = "5.6.2" 
     }
     random = {
       source  = "hashicorp/random"
@@ -15,16 +15,20 @@ terraform {
   required_version = ">= 1.1.0"
 }
 
-module "lambda_function" {
+provider "aws" {
+  region = "us-east-1"
+}
+
+module "lambda_function" "data-mapping" {
   source = "terraform-aws-modules/lambda/aws"
-  version = "4.18.0"
+  version = "5.2.0"
 
   function_name = "data-mapping"
   description   = "Data mapping Lambda"
   handler       = "handler.handler"
-  runtime       = "node18"
+  runtime       = "nodejs18.x"
 
-  source_path = "../functions/dataMapping/src"
+  source_path = "../functions/dataMapping/dist"
 
   tags = {
     Name = "data-mapping"
