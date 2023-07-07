@@ -30,6 +30,13 @@ jobs:
         run: |
           cd functions/dataMapping
           npm run build
+          cd ..
+          cd functions/dataValidator
+          npm run build
+          cd ..
+          cd functions/dataReseeding
+          npm run build
+
   deploy-service:
     needs: ['run-unit-tests','transpile-lambdas']
     runs-on: ubuntu-latest
