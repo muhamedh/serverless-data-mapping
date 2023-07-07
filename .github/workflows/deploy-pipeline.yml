@@ -31,10 +31,13 @@ jobs:
           ls
           cd ./functions/dataMapping
           npm run build
-          cd ..
+          cd ../
           ls
           cd ./functions/dataValidator
           npm run build
+          ls
+          cd ../
+          cd ./functions/dataReseeding
 
 
   deploy-service:
