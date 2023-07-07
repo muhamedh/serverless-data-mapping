@@ -28,13 +28,13 @@ jobs:
 
       - name: Build lambdas
         run: |
-          cd functions/dataMapping
+          cd ./functions/dataMapping
           npm run build
           cd ..
-          cd functions/dataValidator
+          cd ./functions/dataValidator
           npm run build
           cd ..
-          cd functions/dataReseeding
+          cd ./functions/dataReseeding
           npm run build
 
   deploy-service:
