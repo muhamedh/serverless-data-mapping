@@ -31,6 +31,10 @@ jobs:
           ls
           cd ./functions/dataMapping
           npm run build
+          cd ..
+          ls
+          cd ./functions/dataValidator
+          npm run build
 
 
   deploy-service:
