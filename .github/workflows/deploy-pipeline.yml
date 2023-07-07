@@ -29,9 +29,7 @@ jobs:
       - name: Build lambdas
         run: |
           ls
-        run: |
           cd ./functions/dataMapping
-        run: |
           npm run build
 
 
