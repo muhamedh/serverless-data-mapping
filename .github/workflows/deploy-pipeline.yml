@@ -29,17 +29,9 @@ jobs:
       - name: Build lambdas
         run: |
           ls
-          cd ./functions/dataMapping
-          npm run build
-          cd ../
-          ls
-          cd ./functions/dataValidator
-          npm run build
-          ls
-          cd ../
-          cd ./functions/dataReseeding
-
-
+          npm run build --prefix ./functions/dataMapping
+          npm run build --prefix ./functions/dataValidator
+          npm run build --prefix ./functions/dataReseeding
   deploy-service:
     needs: ['run-unit-tests','transpile-lambdas']
     runs-on: ubuntu-latest
