@@ -26,12 +26,26 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Build lambdas
+      - name: Build dataValidator lambda
+        run: |
+          npm run build --prefix ./functions/dataValidator
+      
+      - name: Install node_modules for dataValidator
+        run: |
+          npm run post-build --prefix ./functions/dataValidator
+
+      - name: Archive data validator lambda
+        run: |
+          cd ./functions/dataValidator/dist/
+          zip -r ../../../dataValidatorLayer.zip ./node_modules/
+
+      - name: Upload archive to s3
         run: |
           ls
-          npm run build --prefix ./functions/dataMapping
-          npm run build --prefix ./functions/dataValidator
-          npm run build --prefix ./functions/dataReseeding
+      - name: Test up dir
+        run: |
+          cd ../
+
   deploy-service:
     needs: ['run-unit-tests','transpile-lambdas']
     runs-on: ubuntu-latest

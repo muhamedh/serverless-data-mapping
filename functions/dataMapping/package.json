@@ -8,6 +8,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "build": "tsc --build",
+    "post-build": "cp package*.json dist && cd dist && npm ci --production",
     "clean": "tsc --build --clean"
   },
   "author": "Muhamed Hamzic",
@@ -15,6 +16,9 @@
   "dependencies": {
     "jest": "^29.5.0",
     "typescript": "^5.0.4"
+  },
+  "engines": {
+    "node": "> 18.0.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.22.5",
