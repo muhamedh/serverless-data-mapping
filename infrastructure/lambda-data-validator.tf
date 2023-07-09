@@ -11,7 +11,7 @@ module "data_validator" {
     bucket = "data-mapping-lambda-code"
     key    = "dataValidatorCode.zip"
   }
-
+  create_current_version_allowed_triggers = false
     allowed_triggers = {
     sqs = {
       service    = "sqs"
