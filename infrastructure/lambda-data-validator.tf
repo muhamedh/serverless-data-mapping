@@ -12,6 +12,27 @@ module "data_validator" {
     key    = "dataValidatorCode.zip"
   }
 
+    allowed_triggers = {
+    sqs = {
+      service    = "sqs"
+      source_arn = aws_sqs_queue.data_validator_sqs.arn
+    }
+  }
+
+  event_source_mapping = {
+    sqs = {
+      event_source_arn        = aws_sqs_queue.data_validator_sqs.arn
+      function_response_types = ["ReportBatchItemFailures"]
+    }
+  }
+
+  attach_policies    = true
+  number_of_policies = 1
+
+  policies = [
+    "arn:aws:iam::aws:policy/service-role/AWSLambdaSQSQueueExecutionRole",
+  ]
+
   tags = {
     Name = "data-validator"
   }

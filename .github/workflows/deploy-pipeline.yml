@@ -58,7 +58,7 @@ jobs:
       #     curl --header "Authorization:Bearer $tfc_token" --header "Content-Type:application/vnd.api+json" --request POST --data @infrastructure/json_payload.json https://app.terraform.io/api/v2/runs
 
   deploy-service:
-    needs: ['run-unit-tests','transpile-and-upload-data-validator']
+    needs: ['transpile-and-upload-data-validator']
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
