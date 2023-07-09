@@ -1,5 +1,6 @@
 # Create a new SQS queue
 resource "aws_sqs_queue" "data_validator_sqs" {
+  name = "entry-data-validator-sqs"
 }
 
 # Allow the S3 bucket to write to the SQS queue
