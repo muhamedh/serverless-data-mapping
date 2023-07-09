@@ -6,8 +6,11 @@ module "data_validator" {
   description   = "Data mapping Lambda"
   handler       = "handler.handler"
   runtime       = "nodejs18.x"
-
-  source_path = "../functions/dataValidator/dist"
+  create_package      = false
+  s3_existing_package = {
+    bucket = "data-mapping-lambda-code"
+    key    = "dataValidatorCode.zip"
+  }
 
   tags = {
     Name = "data-validator"

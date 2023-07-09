@@ -141,3 +141,5 @@ performance_report.html
 # ignore test reports
 junit.xml
 tests/
+
+dist/
