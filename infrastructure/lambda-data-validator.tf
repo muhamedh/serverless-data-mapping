@@ -7,7 +7,6 @@ module "data_validator" {
   handler        = "handler.handler"
   runtime        = "nodejs18.x"
   create_package = false
-  role           = aws_iam_role.data_validator_role.arn
   s3_existing_package = {
     bucket = "data-mapping-lambda-code"
     key    = "dataValidatorCode.zip"
@@ -28,39 +27,17 @@ module "data_validator" {
   }
 
   attach_policies    = true
-  number_of_policies = 1
+  number_of_policies = 2
 
   policies = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaSQSQueueExecutionRole",
+    "${aws_iam_policy.data_validator_policy.arn}"
   ]
 
   tags = {
     Name = "data-validator"
   }
 }
-
-resource "aws_iam_role" "data_validator_role" {
-  name = "data-validator-read-from-s3-role"
-  path = "/"
-
-  assume_role_policy = <<EOF
-    {
-
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "lambda.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-  ]
-}
-EOF
-}
-
 #Created Policy for IAM Role
 resource "aws_iam_policy" "data_validator_policy" {
   name        = "data-validator-read-from-s3-role"
@@ -89,9 +66,4 @@ resource "aws_iam_policy" "data_validator_policy" {
 
 } 
     EOF
-}
-
-resource "aws_iam_role_policy_attachment" "attach_policy_to_s3_role" {
-  role       = aws_iam_role.data_validator_role.name
-  policy_arn = aws_iam_policy.data_validator_policy.arn
 }
