@@ -44,7 +44,7 @@ resource "aws_iam_policy" "data_validator_policy" {
   description = "A policy which allows the lambda to read from arrival S3 bucket."
 
 
-  policy = <<EOF
+  policy = <<-EOF
    {
 "Version": "2012-10-17",
 "Statement": [
