@@ -1,8 +1,8 @@
-import { v4 as uuidv4 } from 'uuid';
+import { SQSEvent } from "aws-lambda";
 
-const handler = (() => {
-    console.log("uuid:" + uuidv4());
-    return 'hello';
-});
+const handler = async (event: SQSEvent) => {
+    console.log(event.Records[0]?.body);
+    return true;
+}
 
 export { handler };    
