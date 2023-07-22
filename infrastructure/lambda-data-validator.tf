@@ -44,26 +44,25 @@ resource "aws_iam_policy" "data_validator_policy" {
   description = "A policy which allows the lambda to read from arrival S3 bucket."
 
 
-  policy = <<-EOF
-   {
-"Version": "2012-10-17",
-"Statement": [
+  policy = jsonencode(
     {
-        "Effect": "Allow",
-        "Action": [
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Effect" : "Allow",
+          "Action" : [
             "logs:*"
-        ],
-        "Resource": "arn:aws:logs:*:*:*"
-    },
-    {
-        "Effect": "Allow",
-        "Action": [
+          ],
+          "Resource" : "arn:aws:logs:*:*:*"
+        },
+        {
+          "Effect" : "Allow",
+          "Action" : [
             "s3:*"
-        ],
-        "Resource": "${aws_s3_bucket.arrival_bucket.arn}"
-    }
-]
+          ],
+          "Resource" : "${aws_s3_bucket.arrival_bucket.arn}"
+        }
+      ]
 
-} 
-    EOF
+  })
 }
