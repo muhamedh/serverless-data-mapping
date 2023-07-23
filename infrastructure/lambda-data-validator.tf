@@ -51,18 +51,10 @@ resource "aws_iam_policy" "data_validator_policy" {
         {
           "Effect" : "Allow",
           "Action" : [
-            "logs:*"
+            "s3:GetObject"
           ],
-          "Resource" : "arn:aws:logs:*:*:*"
-        },
-        {
-          "Effect" : "Allow",
-          "Action" : [
-            "s3:*"
-          ],
-          "Resource" : "${aws_s3_bucket.arrival_bucket.arn}"
+          "Resource" : "${aws_s3_bucket.arrival_bucket.arn}/*"
         }
       ]
-
   })
 }
