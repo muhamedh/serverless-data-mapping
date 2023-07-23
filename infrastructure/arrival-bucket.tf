@@ -13,7 +13,7 @@ resource "aws_s3_bucket_notification" "bucket_notification" {
 }
 resource "aws_s3_bucket_policy" "allow_access_from_lambda_functions" {
   bucket = aws_s3_bucket.arrival_bucket.id
-  policy = data.aws_iam_policy_document.allow_access_from_another_account.json
+  policy = data.aws_iam_policy_document.allow_access_from_lambda_functions.json
 }
 
 data "aws_iam_policy_document" "allow_access_from_lambda_functions" {
