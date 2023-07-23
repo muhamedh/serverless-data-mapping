@@ -9,7 +9,7 @@ const readObject = async(bucketName: string, key: string) => {
     }
     const command = new GetObjectCommand(input);
     const response = await s3Client.send(command);
-    console.log(JSON.stringify(response));
+    console.log(response);
     return response;
 }
 

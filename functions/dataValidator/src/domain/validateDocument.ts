@@ -9,7 +9,7 @@ const validateDocument = async (s3Record: S3Record) => {
     s3Record.s3.bucket.name,
     s3Record.s3.object.key
   );
-  console.log("validateDocument" + JSON.stringify(response));
+  console.log("validateDocument: " + response);
 };
 
 export { validateDocument };
