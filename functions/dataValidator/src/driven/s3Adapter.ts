@@ -9,8 +9,11 @@ const readObject = async(bucketName: string, key: string) => {
     }
     const command = new GetObjectCommand(input);
     const response = await s3Client.send(command);
-    console.log(response);
-    return response;
+    if(response.Body){
+        return response.Body.transformToString();
+    } else {
+        throw Error;
+    }
 }
 
 const s3Adapter = async (record:any) => { 
