@@ -1,13 +1,15 @@
-type S3Payload = Record<number, S3Notification>
+export type S3Record = {
+    eventName: string;
+    eventTime: string;
+    s3: S3ObjectDetails;
+}
 
-type S3Notification = {
+export type S3ObjectDetails = {
     bucket: {
         name: string;
     }
-    object: S3NotificationBody;
-}
-
-type S3NotificationBody = {
-    key: string;
-    size: string;
+    object: {
+        key: string;
+        size: number;
+    }
 }
