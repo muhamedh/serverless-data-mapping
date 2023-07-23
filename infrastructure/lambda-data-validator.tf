@@ -46,14 +46,12 @@ resource "aws_iam_policy" "data_validator_policy" {
 
   policy = jsonencode(
     {
-      "Version" : "2012-10-17",
-      "Statement" : [
+      "Version" = "2012-10-17"
+      "Statement" = [
         {
-          "Effect" : "Allow",
-          "Action" : [
-            "s3:GetObject"
-          ],
-          "Resource" : "${aws_s3_bucket.arrival_bucket.arn}/*"
+          "Effect" = "Allow"
+          "Action" = "s3:GetObject"
+          "Resource" = "${aws_s3_bucket.arrival_bucket.arn}/*"
         }
       ]
   })
