@@ -19,8 +19,8 @@ resource "aws_s3_bucket_policy" "allow_access_from_lambda_functions" {
 data "aws_iam_policy_document" "allow_access_from_lambda_functions" {
   statement {
     principals {
-      type        = "SERVICE"
-      identifiers = ["lambda.amazonaws.com"]
+      type        = "AWS"
+      identifiers = [module.data_validator.lambda_function_arn]
     }
 
     actions = [
