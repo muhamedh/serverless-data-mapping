@@ -7,9 +7,9 @@ const sqsAdapter = async (event: SQSEvent) => {
         if(!('body' in record)){
             continue;
         }
-        const s3Payloads: S3Payload[] = JSON.parse(record?.body) as S3Payload[];
-        console.log(JSON.stringify('sqsAdapter: ' + JSON.stringify(s3Payloads)));
-        await validateDocument(s3Payloads);
+        const s3Records:S3Notification[] = JSON.parse(record?.body)?.Records;
+        console.log(JSON.stringify('sqsAdapter: ' + JSON.stringify(s3Records)));
+        await validateDocument(s3Records);
         
     }
     return true;
