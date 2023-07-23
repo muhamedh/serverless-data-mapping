@@ -17,11 +17,13 @@ resource "aws_s3_bucket_policy" "allow_access_from_data_validator_lambda" {
 }
 data "aws_iam_policy_document" "lambda_data_validator_policy_statement" {
   version = "2012-10-17"
-  principals {
-    type = "AWS"
-    identifiers = ["${module.data_validator.lambda_function_arn}"]
-  }
+
   statement {
+    principals {
+      type        = "AWS"
+      identifiers = ["${module.data_validator.lambda_function_arn}"]
+    }
+    effect = "Allow"
     actions = [
       "s3:GetObject"
     ]
