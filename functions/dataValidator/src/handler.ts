@@ -1,7 +1,7 @@
-import { SQSRecord } from "aws-lambda";
+import { SQSEvent } from "aws-lambda";
 import { sqsAdapter } from "./driving/sqsAdapter";
 
-const handler = async (event: SQSRecord) => {
+const handler = async (event: SQSEvent) => {
     await sqsAdapter(event);
 }
 
