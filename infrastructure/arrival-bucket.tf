@@ -11,26 +11,18 @@ resource "aws_s3_bucket_notification" "bucket_notification" {
     events    = ["s3:ObjectCreated:*"]
   }
 }
-resource "aws_s3_bucket_policy" "allow_access_from_lambda_functions" {
+resource "aws_s3_bucket_policy" "allow_access_from_data_validator_lambda" {
   bucket = aws_s3_bucket.arrival_bucket.id
-  policy = data.aws_iam_policy_document.allow_access_from_lambda_functions.json
+  policy = data.aws_iam_policy_document.lambda_data_validator_policy_statement.json
 }
-
-data "aws_iam_policy_document" "allow_access_from_lambda_functions" {
+data "aws_iam_policy_document" "lambda_data_validator_policy_statement" {
+  version = "2012-10-17"
   statement {
-    principals {
-      type        = "AWS"
-      identifiers = [module.data_validator.lambda_function_arn]
-    }
-
     actions = [
-      "s3:GetObject",
-      "s3:ListBucket",
+      "s3:GetObject"
     ]
-
     resources = [
-      aws_s3_bucket.arrival_bucket.arn,
-      "${aws_s3_bucket.arrival_bucket.arn}/*",
+      module.data_validator.lambda_function_arn
     ]
   }
 }
