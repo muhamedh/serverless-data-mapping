@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Define complex types for repeating elements -->
+  <xs:complexType name="SKUType">
+    <xs:sequence>
+      <xs:element name="SKUNumber" type="xs:string"/>
+      <xs:element name="SKUName" type="xs:string"/>
+      <xs:element name="SKUDescription" type="xs:string"/>
+      <xs:element name="SKUPrice">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Amount" type="xs:decimal"/>
+            <xs:element name="CurrencyCode" type="xs:string"/>
+            <xs:element name="OnSaleDate" type="xs:date" minOccurs="0"/>
+            <xs:element name="OfSaleDate" type="xs:date" minOccurs="0"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SKUImages" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Image" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SKUInventory">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="InventoryStatus" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Define the root element and its structure -->
+  <xs:element name="data">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="HeaderData">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TransactionID" type="xs:string"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ProductData">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ProductID" type="xs:string"/>
+              <xs:element name="ProductInformation">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="ProductName" type="xs:string"/>
+                    <xs:element name="ProductDescription" type="xs:string"/>
+                    <xs:element name="ProductImages" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Image" type="xs:string"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="ProductRoundel" type="xs:string"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="SKUData">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SKU" minOccurs="0" maxOccurs="unbounded" type="SKUType"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

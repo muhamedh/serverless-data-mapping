@@ -1,4 +1,4 @@
-import { S3Client, S3ClientConfig, GetObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 
 const readObject = async(bucketName: string, key: string) => {
     console.log('bucketName: ' + bucketName + " key: " + key);
