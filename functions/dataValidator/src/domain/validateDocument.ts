@@ -1,5 +1,4 @@
-import { parseXml } from "libxmljs";
-import validate from "libxmljs";
+import libxmljs from "libxmljs";
 import { readFile } from "fs";
 import { readObject } from "../driven/s3Adapter";
 import { S3Record } from "../types/s3.type";
@@ -15,7 +14,7 @@ const getXSDSchema = () => {
       if(err){
         //TODO throw in a way to go to DLQ
       }
-      return parseXml(data);
+      return libxmljs.parseXml(data);
     });
   }
   return XSD_SCHEMA;
@@ -23,7 +22,7 @@ const getXSDSchema = () => {
 
 const validateDocumentSyntax = async (documentContents: string) => {
   try {
-    parseXml(documentContents);
+    libxmljs.parseXml(documentContents);
   } catch (e) {
     //TODO send message to eventbridge
     return false;
@@ -33,7 +32,7 @@ const validateDocumentSyntax = async (documentContents: string) => {
 
 const validateDocumentAgainstXSDSchema = async (documentContents: string) => {
   const parsed_xsd_schema = getXSDSchema();
-  parseXml(documentContents).validate(parsed_xsd_schema);
+  libxmljs.parseXml(documentContents).validate(parsed_xsd_schema);
 }
 
 const validatePrices = async () => {
