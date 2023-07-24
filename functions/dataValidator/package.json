@@ -20,6 +20,7 @@
     "libxmljs": "^1.0.9"
   },
   "devDependencies": {
+    "@aws-sdk/util-stream-node": "^3.374.0",
     "@babel/preset-env": "^7.22.5",
     "@babel/preset-typescript": "^7.22.5",
     "@types/aws-lambda": "^8.10.119",
@@ -27,6 +28,7 @@
     "@types/uuid": "^9.0.2",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@typescript-eslint/parser": "^5.60.1",
+    "aws-sdk-client-mock": "^3.0.0",
     "babel-jest": "^29.5.0",
     "eslint": "^8.43.0",
     "jest": "^29.5.0",

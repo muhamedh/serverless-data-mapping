@@ -1,28 +1,30 @@
-import libxmljs from "libxmljs";
-import { readFile } from "fs";
+import libxml from "libxmljs";
+import fs from "fs";
+import path from "path";
 import { readObject } from "../driven/s3Adapter";
 import { S3Record } from "../types/s3.type";
 
 let XSD_SCHEMA: any = null;
 
 const getXSDSchema = () => {
-  if(XSD_SCHEMA){
-    console.log('reused XSD schema');
+  if (XSD_SCHEMA != null) {
+    console.log("reused XSD schema");
     return XSD_SCHEMA;
-  }else{
-    XSD_SCHEMA = readFile('../schemas/xml_schema.xsd', 'utf-8', (err,data) => {
-      if(err){
-        //TODO throw in a way to go to DLQ
-      }
-      return libxmljs.parseXml(data);
-    });
+  }
+  try {
+    const filePath = path.resolve(__dirname, "../schemas/xml_schema.xsd");
+    XSD_SCHEMA = fs.readFileSync(filePath, "utf8");
+    return libxml.parseXml(XSD_SCHEMA);
+  } catch (err) {
+    //TODO throw in a way to go to DLQ
+    console.error(err);
   }
   return XSD_SCHEMA;
-}
+};
 
 const validateDocumentSyntax = async (documentContents: string) => {
   try {
-    libxmljs.parseXml(documentContents);
+    libxml.parseXml(documentContents);
   } catch (e) {
     //TODO send message to eventbridge
     return false;
@@ -32,8 +34,9 @@ const validateDocumentSyntax = async (documentContents: string) => {
 
 const validateDocumentAgainstXSDSchema = async (documentContents: string) => {
   const parsed_xsd_schema = getXSDSchema();
-  libxmljs.parseXml(documentContents).validate(parsed_xsd_schema);
-}
+  const parsed_document = libxml.parseXml(documentContents);
+  parsed_document.validate(parsed_xsd_schema);
+};
 
 const validatePrices = async () => {
   // validate currency code
