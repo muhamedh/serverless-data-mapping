@@ -15,8 +15,8 @@ const readObject = async (bucketName: string, key: string) => {
   throw Error;
 };
 
-const s3Adapter = async (record: any) => {
-  // read document from s3
-};
+const copyFileToArchiveBucket = async (fileName: string) => {
+  return null;
+}
 
-export { s3Adapter, readObject };
+export { copyFileToArchiveBucket, readObject };
