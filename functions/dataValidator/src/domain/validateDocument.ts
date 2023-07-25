@@ -35,7 +35,7 @@ const performValidation = async (documentContents: string) => {
     await sendStatelessEvent(EVENT_SOURCE, EVENT_DETAIL_TYPE, {
       timeOfEvent: new Date().toISOString(),
     });
-    throw Error;
+    return false;
   }
 
   const parsed_xsd_schema = getXSDSchema();
@@ -52,11 +52,12 @@ const performValidation = async (documentContents: string) => {
     await sendStatelessEvent(EVENT_SOURCE, EVENT_DETAIL_TYPE, {
       timeOfEvent: new Date().toISOString(),
     });
+    return false;
   }
-  parsing_result;
   //TODO perform pricing validation
 
   //TODO perform inventory validation
+  return true;
 };
 
 const validateDocument = async (s3Record: S3Record) => {
@@ -66,7 +67,9 @@ const validateDocument = async (s3Record: S3Record) => {
     s3Record.s3.object.key
   );
 
-  await performValidation(documentContents);
+  if(!await performValidation(documentContents)){
+    throw Error;
+  }
 
   //send message to data mapping sqs
   await sendMessage({ fileName: s3Record.s3.object.key });
