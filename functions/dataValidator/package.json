@@ -8,7 +8,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "build": "tsc --build",
-    "post-build": "mkdir -p dist/schemas && cp src/schemas/. dist/schemas && cp package*.json dist && cd dist && npm ci --omit=dev",
+    "post-build": "mkdir -p dist/schemas && cp src/schemas/xml_schema.xsd dist/schemas && cp package*.json dist && cd dist && npm ci --omit=dev",
     "clean": "tsc --build --clean"
   },
   "author": "Muhamed Hamzic",
