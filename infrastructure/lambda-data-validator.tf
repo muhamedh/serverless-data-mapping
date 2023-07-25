@@ -13,7 +13,7 @@ module "data_validator" {
   }
   create_current_version_allowed_triggers = false
   cloudwatch_logs_retention_in_days = 5
-  maximum_retry_attempts = 1
+  maximum_retry_attempts = 0
   allowed_triggers = {
     sqs = {
       service    = "sqs"

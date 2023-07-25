@@ -8,6 +8,7 @@ const sendMessage = async (message: any) => {
     QueueUrl: process.env.entry_data_mapping_sqs,
     MessageBody: JSON.stringify(message)
   };
+  console.log(JSON.stringify(input));
   const command = new SendMessageCommand(input);
   
   try{
