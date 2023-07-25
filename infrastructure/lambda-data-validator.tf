@@ -29,13 +29,11 @@ module "data_validator" {
   }
 
   attach_policies    = true
-  number_of_policies = 4
+  number_of_policies = 2
 
   policies = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaSQSQueueExecutionRole",
-    "${aws_iam_policy.data_validator_policy.arn}",
-    "${aws_iam_policy.put_archive_bucket_policy.arn}",
-    "${aws_iam_policy.send_messages_to_data_mapping_sqs.arn}"
+    "${aws_iam_policy.data_validator_policy.arn}"
   ]
 
   tags = {
@@ -62,42 +60,21 @@ resource "aws_iam_policy" "data_validator_policy" {
           "Effect" = "Allow"
           "Action" = "s3:GetObject"
           "Resource" = "${aws_s3_bucket.arrival_bucket.arn}/*"
-        }
-      ]
-  })
-}
-
-resource "aws_iam_policy" "put_archive_bucket_policy" {
-  name        = "data-validator-put-to-s3-policy"
-  description = "A policy which allows the lambda to put items to archive S3 bucket."
-
-
-  policy = jsonencode(
-    {
-      "Version" = "2012-10-17"
-      "Statement" = [
+        },
         {
           "Effect" = "Allow"
           "Action" = "s3:PutObject"
           "Resource" = "${aws_s3_bucket.archive_bucket.arn}/*"
-        }
-      ]
-  })
-}
-
-resource "aws_iam_policy" "send_messages_to_data_mapping_sqs" {
-  name        = "data-validator-send-to-Sqs-policy"
-  description = "A policy which allows the lambda to send messages to data mapping entry sqs"
-
-
-  policy = jsonencode(
-    {
-      "Version" = "2012-10-17"
-      "Statement" = [
+        },
         {
           "Effect" = "Allow"
           "Action" = "sqs:SendMessage*"
           "Resource" = "${aws_sqs_queue.data_mapping_sqs.arn}"
+        },
+        {
+          "Effect" = "Allow"
+          "Action" = "events:PutEvents"
+          "Resource" = "${module.eventbridge.eventbridge_bus_arn}"
         }
       ]
   })
