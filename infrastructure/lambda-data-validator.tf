@@ -3,7 +3,7 @@ module "data_validator" {
   version = "5.2.0"
 
   function_name  = "data-validator"
-  description    = "Data mapping Lambda"
+  description    = "Data validator Lambda"
   handler        = "handler.handler"
   runtime        = "nodejs18.x"
   create_package = false
@@ -49,8 +49,8 @@ module "data_validator" {
 }
 #Created Policy for IAM Role
 resource "aws_iam_policy" "data_validator_policy" {
-  name        = "data-validator-read-from-s3-policy"
-  description = "A policy which allows the lambda to read from arrival S3 bucket."
+  name        = "data-validator-policy"
+  description = "A policy which encompases all needed permissions."
 
 
   policy = jsonencode(
