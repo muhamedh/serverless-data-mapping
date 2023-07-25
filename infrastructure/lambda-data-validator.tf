@@ -43,7 +43,7 @@ module "data_validator" {
   }
 
   environment_variables = {
-    entry_data_mapping_sqs = aws_sqs_queue.data_mapping_sqs.arn
+    entry_data_mapping_sqs = aws_sqs_queue.data_mapping_sqs.url
     archive_bucket = aws_s3_bucket.archive_bucket.id
   }
 }
