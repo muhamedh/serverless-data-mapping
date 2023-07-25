@@ -10,6 +10,7 @@ const eventBuilder = (source: string, detailType: string, detail: StatelessEvent
                 Source: source,
                 DetailType: detailType,
                 Detail: JSON.stringify(detail),
+                EventBusName: process.env.event_bus_name,
             },
         ],
     };
