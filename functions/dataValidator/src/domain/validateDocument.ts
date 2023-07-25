@@ -12,7 +12,7 @@ const EVENT_DETAIL_TYPE = "Invalid XML format.";
 const getXSDSchema = () => {
   if (XSD_SCHEMA != null) {
     console.log("reused XSD schema");
-    return XSD_SCHEMA;
+    return libxml.parseXml(XSD_SCHEMA);
   }
   try {
     const filePath = path.resolve(__dirname, "../schemas/xml_schema.xsd");
@@ -27,6 +27,7 @@ const getXSDSchema = () => {
 
 const performValidation = async (documentContents: string) => {
   let parsed_document = null;
+  let parsing_result = null;
   try {
     parsed_document = libxml.parseXml(documentContents);
   } catch (e) {
@@ -40,15 +41,19 @@ const performValidation = async (documentContents: string) => {
   const parsed_xsd_schema = getXSDSchema();
 
   try {
-    parsed_document.validate(parsed_xsd_schema);
+    parsing_result = parsed_document.validate(parsed_xsd_schema);
   } catch (e) {
     console.log(e);
-    await sendStatelessEvent(EVENT_SOURCE, EVENT_DETAIL_TYPE, {
-      timeOfEvent: new Date().toISOString(),
-    });
+    //TODO throw in a way for dlq
     throw Error;
   }
 
+  if (!parsing_result) {
+    await sendStatelessEvent(EVENT_SOURCE, EVENT_DETAIL_TYPE, {
+      timeOfEvent: new Date().toISOString(),
+    });
+  }
+  parsing_result;
   //TODO perform pricing validation
 
   //TODO perform inventory validation

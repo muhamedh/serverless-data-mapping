@@ -81,7 +81,7 @@ describe("component tests for dataValidator lambda function", () => {
   it("should send message to eventbridge due to xml not being inline with schema", async () => {
     const filePath = path.resolve(
       __dirname,
-      "./helpers/productSyntaxErrorMock.xml"
+      "./helpers/productSchemaErrorMock.xml"
     );
     const stream = sdkStreamMixin(fs.createReadStream(filePath));
 
