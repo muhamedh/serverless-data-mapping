@@ -3,8 +3,11 @@ import fs from "fs";
 import path from "path";
 import { readObject, copyFileToArchiveBucket } from "../driven/s3Adapter";
 import { sendMessage } from "../driven/sqsAdapter";
+import { sendStatelessEvent } from "../driven/eventBridgeAdapter";
 import { S3Record } from "../types/s3.type";
 let XSD_SCHEMA: any = null;
+const EVENT_SOURCE = "data-validator";
+const EVENT_DETAIL_TYPE = "Invalid XML format.";
 
 const getXSDSchema = () => {
   if (XSD_SCHEMA != null) {
@@ -18,32 +21,37 @@ const getXSDSchema = () => {
   } catch (err) {
     //TODO throw in a way to go to DLQ
     console.error(err);
+    throw Error;
   }
-  return XSD_SCHEMA;
 };
 
 const performValidation = async (documentContents: string) => {
   let parsed_document = null;
   try {
-    parsed_document = libxml.parseXml(documentContents)
+    parsed_document = libxml.parseXml(documentContents);
   } catch (e) {
-    //TODO send message to eventbridge
+    console.log(e);
+    await sendStatelessEvent(EVENT_SOURCE, EVENT_DETAIL_TYPE, {
+      timeOfEvent: new Date().toISOString(),
+    });
     throw Error;
   }
-  
+
   const parsed_xsd_schema = getXSDSchema();
 
-  try{
+  try {
     parsed_document.validate(parsed_xsd_schema);
   } catch (e) {
-    //TODO send message to eventbridge
+    console.log(e);
+    await sendStatelessEvent(EVENT_SOURCE, EVENT_DETAIL_TYPE, {
+      timeOfEvent: new Date().toISOString(),
+    });
     throw Error;
   }
 
   //TODO perform pricing validation
 
   //TODO perform inventory validation
-  
 };
 
 const validateDocument = async (s3Record: S3Record) => {
@@ -52,12 +60,11 @@ const validateDocument = async (s3Record: S3Record) => {
     s3Record.s3.bucket.name,
     s3Record.s3.object.key
   );
-  
+
   await performValidation(documentContents);
 
-  //TODO send message to data mapping sqs
-  const r = await sendMessage({ fileName: s3Record.s3.object.key});
-  console.log(r);
+  //send message to data mapping sqs
+  await sendMessage({ fileName: s3Record.s3.object.key });
   //TODO copy file to archive bucket used for data reseeding
   copyFileToArchiveBucket(s3Record.s3.object.key);
   // DEBUG -> console.log("validateDocument: " + response);
