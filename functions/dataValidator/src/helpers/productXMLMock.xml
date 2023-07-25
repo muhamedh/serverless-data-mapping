@@ -10,8 +10,8 @@
 			<ProductDescription>valylene seen unprosperousness unequipped coursed enthalpy emptor spuriosity cephalization sylvanry plungingly ratwa shraf balletomane nucleoidioplasma unenthusiasm Belialist regulation seneschalty tetrachromatic continentalism woodyard fleshless disculpate tachythanatous rebarbarize upstamp yesterday computable mathematic</ProductDescription>
 			<ProductImages>
 				<Image>image_url_0</Image>
-				<Image>image_url_1</Image>
-				<Image>image_url_2</Image>
+				<Image>image_url_0</Image>
+				<Image>image_url_0</Image>
 			</ProductImages>
 			<ProductRoundel> </ProductRoundel>
 		</ProductInformation>
@@ -24,9 +24,12 @@
 			<SKUPrice>
 				<Amount>10.99</Amount>
 				<CurrencyCode>USD</CurrencyCode>
+				<OnSaleDate>2002-09-24-06:00</OnSaleDate>
+				<OffSaleDate>2002-09-24-06:00</OffSaleDate>
 			</SKUPrice>
 			<SKUImages>
 				<Image>sku_image_url_1</Image>
+				<Image>sku_image_url_2</Image>
 			</SKUImages>
 			<SKUInventory>
 				<InventoryStatus>InStock</InventoryStatus>

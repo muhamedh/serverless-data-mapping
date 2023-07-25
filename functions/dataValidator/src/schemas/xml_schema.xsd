@@ -13,13 +13,13 @@
             <xs:element name="Amount" type="xs:decimal"/>
             <xs:element name="CurrencyCode" type="xs:string"/>
             <xs:element name="OnSaleDate" type="xs:date" minOccurs="0"/>
-            <xs:element name="OfSaleDate" type="xs:date" minOccurs="0"/>
+            <xs:element name="OffSaleDate" type="xs:date" minOccurs="0"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
       <xs:element name="SKUImages" minOccurs="0" maxOccurs="unbounded">
         <xs:complexType>
-          <xs:sequence>
+          <xs:sequence minOccurs="0" maxOccurs="unbounded">
             <xs:element name="Image" type="xs:string"/>
           </xs:sequence>
         </xs:complexType>
@@ -56,7 +56,7 @@
                     <xs:element name="ProductDescription" type="xs:string"/>
                     <xs:element name="ProductImages" minOccurs="0" maxOccurs="unbounded">
                       <xs:complexType>
-                        <xs:sequence>
+                        <xs:sequence minOccurs="0" maxOccurs="unbounded">
                           <xs:element name="Image" type="xs:string"/>
                         </xs:sequence>
                       </xs:complexType>
