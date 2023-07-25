@@ -2,7 +2,12 @@ import { SQSEvent } from "aws-lambda";
 import { sqsAdapter } from "./driving/sqsAdapter";
 
 const handler = async (event: SQSEvent) => {
-    await sqsAdapter(event);
+    try{
+        await sqsAdapter(event);
+    }catch(e){
+        return null;
+    }
+    
 }
 
 export { handler };    
