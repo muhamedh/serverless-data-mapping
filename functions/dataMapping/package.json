@@ -15,10 +15,8 @@
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-cloudwatch-events": "^3.370.0",
-    "@aws-sdk/client-eventbridge": "^3.363.0",
     "@aws-sdk/client-s3": "^3.374.0",
-    "@aws-sdk/client-sqs": "^3.363.0",
-    "libxmljs": "^1.0.9"
+    "xml2js": "^0.6.1"
   },
   "devDependencies": {
     "@aws-sdk/util-stream-node": "^3.374.0",
@@ -27,6 +25,7 @@
     "@types/aws-lambda": "^8.10.119",
     "@types/jest": "^29.5.3",
     "@types/uuid": "^9.0.2",
+    "@types/xml2js": "^0.4.11",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@typescript-eslint/parser": "^5.60.1",
     "aws-sdk-client-mock": "^3.0.0",

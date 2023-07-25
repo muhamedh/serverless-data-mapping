@@ -2,7 +2,7 @@ import { S3Client, GetObjectCommand, CopyObjectCommand } from "@aws-sdk/client-s
 
 const s3Client = new S3Client({});
 
-const readObject = async (bucketName: string, key: string) => {
+const readObject = async (bucketName: string | undefined, key: string) => {
   console.log("read object from -> bucketName: " + bucketName + " key: " + key);
   
   const input = {
