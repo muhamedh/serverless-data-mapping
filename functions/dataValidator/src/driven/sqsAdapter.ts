@@ -5,7 +5,7 @@ const sendMessage = async (message: any) => {
   const sqsClient = new SQSClient({});
 
   const input = {
-    QueueUrl: process.env["entry-data-mapping-sqs"],
+    QueueUrl: process.env.entry_data_mapping_sqs,
     MessageBody: JSON.stringify(message)
   };
   const command = new SendMessageCommand(input);

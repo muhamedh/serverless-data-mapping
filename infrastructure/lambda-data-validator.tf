@@ -43,8 +43,8 @@ module "data_validator" {
   }
 
   environment_variables = {
-    "entry-data-mapping-sqs" = aws_sqs_queue.data_mapping_sqs.arn
-    "archive-bucket" = aws_s3_bucket.archive_bucket.id
+    entry_data_mapping_sqs = aws_sqs_queue.data_mapping_sqs.arn
+    archive_bucket = aws_s3_bucket.archive_bucket.id
   }
 }
 #Created Policy for IAM Role

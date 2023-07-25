@@ -33,7 +33,7 @@ describe("component tests for dataValidator lambda function", () => {
       Key: "product/123456789_1.xml"
     });
     expect(sqsMock.call(0).args[0].input).toEqual({
-      QueueUrl: process.env['entry-data-mapping-sqs'],
+      QueueUrl: process.env.entry_data_mapping_sqs,
       MessageBody: JSON.stringify({ fileName: "product/123456789_1.xml" }),
     });
   });
