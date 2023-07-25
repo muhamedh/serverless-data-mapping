@@ -1,6 +1,6 @@
 import { sqsArrivalMessage } from "./helpers/sqsArrivalMessageMock";
 import { mockClient } from "aws-sdk-client-mock";
-import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, GetObjectCommand, CopyObjectCommand } from "@aws-sdk/client-s3";
 import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
 
 import fs from "fs";
@@ -26,16 +26,24 @@ describe("component tests for dataValidator lambda function", () => {
     eventBridgeMock.reset();
   });
 
-  it("should send message to entry-data-mapping sqs", async () => {
+  it("should send message to entry-data-mapping sqs and copy object to archive bucket", async () => {
     const filePath = path.resolve(__dirname, "./helpers/productXMLMock.xml");
     const stream = sdkStreamMixin(fs.createReadStream(filePath));
+    process.env.archive_bucket = 'dummy_archive_bucket_name';
+    process.env.arrival_bucket = 'dummy_arrival_bucket_name';
     s3Mock.on(GetObjectCommand).resolves({
       Body: stream,
     });
+    s3Mock.on(CopyObjectCommand).resolves({});
     sqsMock.on(SendMessageCommand).resolves({});
     await handler(sqsArrivalMessage);
     expect(s3Mock.call(0).args[0].input).toEqual({
       Bucket: "arrival-bucket-426643868142",
+      Key: "product/123456789_1.xml",
+    });
+    expect(s3Mock.call(1).args[0].input).toEqual({
+      Bucket: "dummy_archive_bucket_name",
+      CopySource: "/dummy_arrival_bucket_name/product/123456789_1.xml",
       Key: "product/123456789_1.xml",
     });
     expect(sqsMock.call(0).args[0].input).toEqual({
@@ -111,6 +119,7 @@ describe("component tests for dataValidator lambda function", () => {
       ],
     });
   });
+  
 });
 
 export {};

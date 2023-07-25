@@ -42,6 +42,7 @@ module "data_validator" {
 
   environment_variables = {
     entry_data_mapping_sqs = aws_sqs_queue.data_mapping_sqs.url
+    arrival_bucket = aws_s3_bucket.arrival_bucket.id
     archive_bucket = aws_s3_bucket.archive_bucket.id
     event_bus_name = module.eventbridge.eventbridge_bus_name
   }

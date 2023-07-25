@@ -74,7 +74,7 @@ const validateDocument = async (s3Record: S3Record) => {
   //send message to data mapping sqs
   await sendMessage({ fileName: s3Record.s3.object.key });
   //TODO copy file to archive bucket used for data reseeding
-  copyFileToArchiveBucket(s3Record.s3.object.key);
+  await copyFileToArchiveBucket(s3Record.s3.object.key);
   // DEBUG -> console.log("validateDocument: " + response);
 };
 
