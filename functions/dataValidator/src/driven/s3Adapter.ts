@@ -39,10 +39,10 @@ const copyFileToArchiveBucket = async (fileName: string) => {
   }
 };
 
-const deleteFileFromArchiveBucket = async (fileName: string) => {
+const deleteFileFromArrivalBucket = async (fileName: string) => {
   console.log("delete object -> " + fileName);
   const input = {
-    Bucket: process.env.archive_bucket,
+    Bucket: process.env.arrival_bucket,
     Key: fileName,
   };
   const command = new DeleteObjectCommand(input);
@@ -54,4 +54,4 @@ const deleteFileFromArchiveBucket = async (fileName: string) => {
   }
 };
 
-export { copyFileToArchiveBucket, deleteFileFromArchiveBucket, readObject };
+export { copyFileToArchiveBucket, deleteFileFromArrivalBucket, readObject };

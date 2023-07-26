@@ -1,7 +1,7 @@
 import libxml from "libxmljs";
 import fs from "fs";
 import path from "path";
-import { readObject, copyFileToArchiveBucket, deleteFileFromArchiveBucket } from "../driven/s3Adapter";
+import { readObject, copyFileToArchiveBucket, deleteFileFromArrivalBucket } from "../driven/s3Adapter";
 import { sendMessage } from "../driven/sqsAdapter";
 import { sendStatelessEvent } from "../driven/eventBridgeAdapter";
 import { S3Record } from "../types/s3.type";
@@ -76,7 +76,7 @@ const validateDocument = async (s3Record: S3Record) => {
   await copyFileToArchiveBucket(objectKey);
   //send message to data mapping sqs
   await sendMessage({ fileName: objectKey });
-  await deleteFileFromArchiveBucket(objectKey);
+  await deleteFileFromArrivalBucket(objectKey);
   return null;
 };
 
