@@ -1,7 +1,7 @@
 resource "aws_api_gateway_rest_api" "product_api" {
   name        = "Product Information API"
   description = "API exposing mapped product information"
-  body        = template_file.aws_api_product_openapi_document
+  body        = data.template_file.aws_api_product_openapi_document
 }
 
 resource "aws_api_gateway_deployment" "product_api_deployment" {
@@ -26,7 +26,7 @@ data "template_file" "aws_api_product_openapi_document" {
 }
 
 resource "aws_iam_role" "product_api_gw_role" {
-  name               = "Product API Gateway Role"
+  name               = "product-API-gateway-role"
   assume_role_policy = jsonencode({
     Version: "2012-10-17",
     Statement: [
@@ -42,7 +42,7 @@ resource "aws_iam_role" "product_api_gw_role" {
 }
 
 resource "aws_iam_policy" "product_api_gw_policy" {
-  name        = "Product API Gateway Policy"
+  name        = "product-API-gateway-policy"
   description = "Policy giving access to dynamoDB read"
 
   policy = jsonencode({
