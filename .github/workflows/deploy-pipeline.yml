@@ -88,9 +88,41 @@ jobs:
       - name: Test up dir
         run: |
           cd ../
+  transpile-and-upload-stream-processor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Build streamProcessor lambda
+        run: |
+          npm install --prefix ./functions/streamProcessor
+          npm run build --prefix ./functions/streamProcessor
+      
+      - name: Install node_modules for streamProcessor
+        run: |
+          npm run post-build --prefix ./functions/streamProcessor
+
+      - name: Archive data mapping lambda
+        run: |
+          cd ./functions/streamProcessor/dist/
+          zip -r ../../../infrastructure/streamProcessorCode.zip ./
+
+      - name: Upload archive to s3
+        run: |
+          cd infrastructure/
+          aws s3 cp ./streamProcessor.zip s3://data-mapping-lambda-code
+      - name: Test up dir
+        run: |
+          cd ../
 
   deploy-service:
-    needs: ['transpile-and-upload-data-validator', 'transpile-and-upload-data-mapping']
+    needs: ['transpile-and-upload-data-validator', 'transpile-and-upload-data-mapping', 'transpile-and-upload-stream-processor']
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
