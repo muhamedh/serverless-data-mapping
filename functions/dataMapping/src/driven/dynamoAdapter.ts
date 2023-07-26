@@ -1,16 +1,16 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { PutCommand, DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
-
+import { marshall } from "@aws-sdk/util-dynamodb";
 const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
 
 const putItem = async (item: any, transactionID: string, productId: string, skuNumber: string | undefined) => {
   const command = new PutCommand({
     TableName: process.env.product_database,
-    ConditionExpression: ":transactionID > transactionID",
-    ExpressionAttributeValues: {
+    ConditionExpression: "attribute_exists(transactionID) AND :transactionID > transactionID",
+    ExpressionAttributeValues: marshall({
       ":transactionID" : transactionID
-    },
+    }),
     Item: {
       data: item,
       transactionID: transactionID,
