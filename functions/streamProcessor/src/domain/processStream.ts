@@ -1,5 +1,5 @@
 const processStream = async (stream: string) => {
-  console.log(stream)
+  console.log(JSON.stringify(stream));
 };
 
 export { processStream };

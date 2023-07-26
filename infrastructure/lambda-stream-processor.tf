@@ -28,7 +28,7 @@ module "stream_processor" {
       starting_position = "LATEST"
       filter_criteria = {
         pattern = jsonencode({
-          eventName : ["INSERT"]
+          eventName : ["INSERT", "REMOVE", "MODIFY"]
         })
       }
     }
