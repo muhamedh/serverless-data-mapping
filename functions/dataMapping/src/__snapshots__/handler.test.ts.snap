@@ -1,0 +1,190 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`component tests for dataValidator lambda function should map multi sku product 1`] = `
+{
+  "ConditionExpression": "transactionID < :transactionID",
+  "ExpressionAttributeValues": {
+    ":transactionID": {
+      "S": "16459",
+    },
+  },
+  "Item": {
+    "ProductID": "16111",
+    "SKUNumber": "SKUNUMBER#",
+    "data": {
+      "productID": "16111",
+      "productInformation": {
+        "productDescription": "valylene seen unprosperousness unequipped coursed enthalpy emptor spuriosity cephalization sylvanry plungingly ratwa shraf balletomane nucleoidioplasma unenthusiasm Belialist regulation seneschalty tetrachromatic continentalism woodyard fleshless disculpate tachythanatous rebarbarize upstamp yesterday computable mathematic",
+        "productImages": [
+          "image_url_0",
+          "image_url_0",
+          "image_url_0",
+        ],
+        "productName": "palaeolith demiowl Jurevis",
+        "productRoundel": " ",
+      },
+    },
+    "transactionID": "16459",
+  },
+  "TableName": undefined,
+}
+`;
+
+exports[`component tests for dataValidator lambda function should map multi sku product 2`] = `
+{
+  "ConditionExpression": "transactionID < :transactionID",
+  "ExpressionAttributeValues": {
+    ":transactionID": {
+      "S": "16459",
+    },
+  },
+  "Item": {
+    "ProductID": "16111",
+    "SKUNumber": "SKUNUMBER#mI*^Luo",
+    "data": {
+      "SKUDescription": "slay anallantoidean tensional race patinous Chavante preinvent cushionless Jezebelish zygopleural nunky thioantimoniate atelorachidia amplifier unpanel Salicornia bonebinder stylishly Chiltern salmagundi metaphosphate glutton monarchical anachromasis ungovernably pensive ocarina occipitonasal nonrustable waterwise zeist sparpiece",
+      "SKUImages": [
+        "sku_image_url_1",
+        "sku_image_url_2",
+      ],
+      "SKUInventory": "InStock",
+      "SKUName": "supramental unprettiness Gaelicism genialness",
+      "SKUNumber": "mI*^Luo",
+      "SKUPrices": [
+        {
+          "Amount": [
+            "10.99",
+          ],
+          "CurrencyCode": [
+            "USD",
+          ],
+          "OffSaleDate": [
+            "2002-09-24-06:00",
+          ],
+          "OnSaleDate": [
+            "2002-09-24-06:00",
+          ],
+        },
+      ],
+    },
+    "transactionID": "16459",
+  },
+  "TableName": undefined,
+}
+`;
+
+exports[`component tests for dataValidator lambda function should map multi sku product 3`] = `
+{
+  "ConditionExpression": "transactionID < :transactionID",
+  "ExpressionAttributeValues": {
+    ":transactionID": {
+      "S": "16459",
+    },
+  },
+  "Item": {
+    "ProductID": "16111",
+    "SKUNumber": "SKUNUMBER#AAAAA",
+    "data": {
+      "SKUDescription": "slay anallantoidean tensional race patinous Chavante preinvent cushionless Jezebelish zygopleural nunky thioantimoniate atelorachidia amplifier unpanel Salicornia bonebinder stylishly Chiltern salmagundi metaphosphate glutton monarchical anachromasis ungovernably pensive ocarina occipitonasal nonrustable waterwise zeist sparpiece",
+      "SKUImages": [
+        "sku_image_url_1",
+        "sku_image_url_2",
+      ],
+      "SKUInventory": "InStock",
+      "SKUName": "supramental unprettiness Gaelicism genialness",
+      "SKUNumber": "AAAAA",
+      "SKUPrices": [
+        {
+          "Amount": [
+            "10.99",
+          ],
+          "CurrencyCode": [
+            "USD",
+          ],
+          "OffSaleDate": [
+            "2002-09-24-06:00",
+          ],
+          "OnSaleDate": [
+            "2002-09-24-06:00",
+          ],
+        },
+      ],
+    },
+    "transactionID": "16459",
+  },
+  "TableName": undefined,
+}
+`;
+
+exports[`component tests for dataValidator lambda function should send message to entry-data-mapping sqs and copy object to archive bucket 1`] = `
+{
+  "ConditionExpression": "transactionID < :transactionID",
+  "ExpressionAttributeValues": {
+    ":transactionID": {
+      "S": "16459",
+    },
+  },
+  "Item": {
+    "ProductID": "16111",
+    "SKUNumber": "SKUNUMBER#",
+    "data": {
+      "productID": "16111",
+      "productInformation": {
+        "productDescription": "valylene seen unprosperousness unequipped coursed enthalpy emptor spuriosity cephalization sylvanry plungingly ratwa shraf balletomane nucleoidioplasma unenthusiasm Belialist regulation seneschalty tetrachromatic continentalism woodyard fleshless disculpate tachythanatous rebarbarize upstamp yesterday computable mathematic",
+        "productImages": [
+          "image_url_0",
+          "image_url_0",
+          "image_url_0",
+        ],
+        "productName": "palaeolith demiowl Jurevis",
+        "productRoundel": " ",
+      },
+    },
+    "transactionID": "16459",
+  },
+  "TableName": undefined,
+}
+`;
+
+exports[`component tests for dataValidator lambda function should send message to entry-data-mapping sqs and copy object to archive bucket 2`] = `
+{
+  "ConditionExpression": "transactionID < :transactionID",
+  "ExpressionAttributeValues": {
+    ":transactionID": {
+      "S": "16459",
+    },
+  },
+  "Item": {
+    "ProductID": "16111",
+    "SKUNumber": "SKUNUMBER#mI*^Luo",
+    "data": {
+      "SKUDescription": "slay anallantoidean tensional race patinous Chavante preinvent cushionless Jezebelish zygopleural nunky thioantimoniate atelorachidia amplifier unpanel Salicornia bonebinder stylishly Chiltern salmagundi metaphosphate glutton monarchical anachromasis ungovernably pensive ocarina occipitonasal nonrustable waterwise zeist sparpiece",
+      "SKUImages": [
+        "sku_image_url_1",
+        "sku_image_url_2",
+      ],
+      "SKUInventory": "InStock",
+      "SKUName": "supramental unprettiness Gaelicism genialness",
+      "SKUNumber": "mI*^Luo",
+      "SKUPrices": [
+        {
+          "Amount": [
+            "10.99",
+          ],
+          "CurrencyCode": [
+            "USD",
+          ],
+          "OffSaleDate": [
+            "2002-09-24-06:00",
+          ],
+          "OnSaleDate": [
+            "2002-09-24-06:00",
+          ],
+        },
+      ],
+    },
+    "transactionID": "16459",
+  },
+  "TableName": undefined,
+}
+`;

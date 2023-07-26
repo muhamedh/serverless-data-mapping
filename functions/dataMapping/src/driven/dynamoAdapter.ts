@@ -7,6 +7,10 @@ const docClient = DynamoDBDocumentClient.from(client);
 const putItem = async (item: any, transactionID: string, productId: string, skuNumber: string | undefined) => {
   const command = new PutCommand({
     TableName: process.env.product_database,
+    ConditionExpression: "transactionID < :transactionID",
+    ExpressionAttributeValues: {
+      ":transactionID" : {"S" : transactionID}
+    },
     Item: {
       data: item,
       transactionID: transactionID,

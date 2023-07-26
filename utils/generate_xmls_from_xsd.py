@@ -109,7 +109,7 @@ xsd_file = 'xml_schema.xsd'
 # Load XSD schema
 schema = xmlschema.XMLSchema(xsd_file)
 
-NUMBER_OF_FILES_TO_GENERATE = 1
+NUMBER_OF_FILES_TO_GENERATE = 100
 
 # Download words used for generating ProductName and ProductDescription
 nltk.download('words')

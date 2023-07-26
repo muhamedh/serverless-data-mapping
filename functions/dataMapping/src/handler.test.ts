@@ -2,6 +2,7 @@ import { sqsArrivalMessage } from "./helpers/sqsArrivalMessageMock";
 import { mockClient } from "aws-sdk-client-mock";
 import { S3Client, GetObjectCommand, CopyObjectCommand } from "@aws-sdk/client-s3";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
 import fs from "fs";
 import path from "path";
 
@@ -13,9 +14,11 @@ jest.setTimeout(1000000);
 
 describe("component tests for dataValidator lambda function", () => {
   const s3Mock = mockClient(S3Client);
+  const dbMock = mockClient(DynamoDBDocumentClient);
 
   beforeEach(() => {
     s3Mock.reset();
+    dbMock.reset();
   });
 
   it("should send message to entry-data-mapping sqs and copy object to archive bucket", async () => {
@@ -26,6 +29,7 @@ describe("component tests for dataValidator lambda function", () => {
       Body: stream,
     });
     s3Mock.on(CopyObjectCommand).resolves({});
+    dbMock.on(PutCommand).resolves({});
 
     await handler(sqsArrivalMessage);
     
@@ -34,7 +38,8 @@ describe("component tests for dataValidator lambda function", () => {
       Key: "product/123456789_1.xml",
     });
 
-    //TODO add match snapshot when sending to DynamoDB
+    expect(dbMock.call(0).args[0].input).toMatchSnapshot();
+    expect(dbMock.call(1).args[0].input).toMatchSnapshot();
   });
 
   it("should map multi sku product", async () => {
@@ -45,7 +50,7 @@ describe("component tests for dataValidator lambda function", () => {
       Body: stream,
     });
     s3Mock.on(CopyObjectCommand).resolves({});
-
+    dbMock.on(PutCommand).resolves({});
     await handler(sqsArrivalMessage);
     
     expect(s3Mock.call(0).args[0].input).toEqual({
@@ -53,7 +58,9 @@ describe("component tests for dataValidator lambda function", () => {
       Key: "product/123456789_1.xml",
     });
     
-    //TODO add match snapshot when sending to DynamoDB
+    expect(dbMock.call(0).args[0].input).toMatchSnapshot();
+    expect(dbMock.call(1).args[0].input).toMatchSnapshot();
+    expect(dbMock.call(2).args[0].input).toMatchSnapshot();
   });
 });
 
