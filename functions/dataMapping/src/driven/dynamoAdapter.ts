@@ -13,13 +13,15 @@ const putItem = async (item: any, transactionID: string, productId: string, skuN
       ProductID: productId,
       SKUNumber: skuNumber,
     },
-    ConditionExpression: "#transID <= :transactionID OR attribute_not_exists(#productID)",
+    ConditionExpression: "#transID <= :transactionID OR (#skuNumber <> :skuNoOptionNumber OR #skuNumber <> :skuOptionNumber)",
     ExpressionAttributeNames: {
       '#transID': 'transactionID',
-      '#productID': 'ProductID'
+      '#skuNumber': 'SKUNumber'
     },
     ExpressionAttributeValues:{
-      ":transactionID" : transactionID
+      ":transactionID" : transactionID,
+      ':skuNoOptionNumber': 'SKUNUMBER#',
+      ':skuOptionNumber': `SKUNUMBER#${skuNumber}`
     },
   });
 
