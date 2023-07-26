@@ -5,6 +5,7 @@ const handler = async (event: SQSEvent) => {
     try{
         await sqsAdapter(event);
     }catch(e){
+        console.log(e);
         return null;
     }
     

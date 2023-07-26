@@ -5,6 +5,7 @@ const handler = async (streamEvents: Stream) => {
     try{
         await dynamoDBStreamAdapter(streamEvents);
     }catch(e){
+        console.log(e);
         return null;
     }
     
