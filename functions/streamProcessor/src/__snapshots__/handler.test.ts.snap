@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`component tests for streamProcessor lambda function should send a statefull event to eventbridge on insert stream event 1`] = `
+{
+  "Entries": [
+    {
+      "Detail": ""{\\"SKUNumber\\":{\\"S\\":\\"SKUNUMBER#\\"},\\"data\\":{\\"M\\":{\\"productID\\":{\\"S\\":\\"112312312312312312312312312312985\\"},\\"productInformation\\":{\\"M\\":{\\"productImages\\":{\\"L\\":[{\\"S\\":\\"image_url_0\\"},{\\"S\\":\\"image_url_1\\"},{\\"S\\":\\"image_url_2\\"},{\\"S\\":\\"image_url_3\\"},{\\"S\\":\\"image_url_4\\"},{\\"S\\":\\"image_url_5\\"},{\\"S\\":\\"image_url_6\\"}]},\\"productRoundel\\":{\\"S\\":\\" \\"},\\"productDescription\\":{\\"S\\":\\"demissionary catella serpenticidal squatterdom ananda arthrophyma objectionability behaviored morbilliform machin spary promotement tetradrachma windbracing underworkman stenocardiac righty Greenland whinchacker compotatory nonpurchase dysprosia autothermy vaticide proroyal trichologist polygyny intraglacial anthropocentric octoglot diencephalic copacetic corny hawsepipe butein\\"},\\"productName\\":{\\"S\\":\\"andesitic mutiny deconventionalize\\"}}}}},\\"ProductID\\":{\\"S\\":\\"112312312312312312312312312312985\\"},\\"transactionID\\":{\\"S\\":\\"631231231231\\"}}"",
+      "DetailType": "dataInsert",
+      "EventBusName": undefined,
+      "Source": "stream-processor",
+    },
+  ],
+}
+`;
+
+exports[`component tests for streamProcessor lambda function should send a stateless event to eventbridge on modify stream event 1`] = `
+{
+  "Entries": [
+    {
+      "Detail": ""{\\"SKUNumber\\":{\\"S\\":\\"SKUNUMBER#\\"},\\"ProductID\\":{\\"S\\":\\"12985\\"}}"",
+      "DetailType": "dataModify",
+      "EventBusName": undefined,
+      "Source": "stream-processor",
+    },
+  ],
+}
+`;
+
+exports[`component tests for streamProcessor lambda function should send a stateless event to eventbridge on remove stream event 1`] = `
+{
+  "Entries": [
+    {
+      "Detail": ""{\\"SKUNumber\\":{\\"S\\":\\"SKUNUMBER#\\"},\\"ProductID\\":{\\"S\\":\\"112312312312312312312312312312985\\"}}"",
+      "DetailType": "dataRemove",
+      "EventBusName": undefined,
+      "Source": "stream-processor",
+    },
+  ],
+}
+`;

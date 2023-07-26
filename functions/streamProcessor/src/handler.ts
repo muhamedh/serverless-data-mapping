@@ -1,8 +1,9 @@
 import { dynamoDBStreamAdapter } from "./driving/dynamoDBStreamAdapter";
+import { Stream } from "./types/stream.type";
 
-const handler = async (event: any) => {
+const handler = async (streamEvents: Stream) => {
     try{
-        await dynamoDBStreamAdapter(event);
+        await dynamoDBStreamAdapter(streamEvents);
     }catch(e){
         return null;
     }

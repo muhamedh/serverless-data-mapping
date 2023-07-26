@@ -1,9 +1,9 @@
 import { CloudWatchEventsClient, PutEventsCommand } from "@aws-sdk/client-cloudwatch-events";
-import { StatelessEvent, StatelessEventDetail } from "../types/eventbridge.type";
+import { StatelessEvent } from "../types/eventbridge.type";
 
 const client = new CloudWatchEventsClient({});
 
-const eventBuilder = (source: string, detailType: string, detail: StatelessEventDetail): StatelessEvent => {
+const eventBuilder = (source: string, detailType: string, detail: string): StatelessEvent => {
     return {
         Entries: [
             {
@@ -16,7 +16,7 @@ const eventBuilder = (source: string, detailType: string, detail: StatelessEvent
     };
 }
 
-const sendStatelessEvent = async (source: string, detailType: string, detail: StatelessEventDetail) => {
+const sendEvent = async (source: string, detailType: string, detail: string) => {
   console.log('Sending message to EventBridge...');
   const command = await new PutEventsCommand(eventBuilder(source, detailType, detail));
   try {
@@ -27,4 +27,4 @@ const sendStatelessEvent = async (source: string, detailType: string, detail: St
   }
 };
 
-export { sendStatelessEvent };
+export { sendEvent };
