@@ -10,12 +10,15 @@ const readObject = async (bucketName: string | undefined, key: string) => {
     Key: key,
   };
   const command = new GetObjectCommand(input);
-  const response = await s3Client.send(command);
-  if (response.Body) {
-    return response.Body.transformToString();
+  try{
+    const response = await s3Client.send(command);
+    if (response.Body) {
+      return await response.Body.transformToString();
+    }
+  }catch(e){
+    console.log(e);
+    throw Error;
   }
-  //TODO throw in a way to end up in dlq
-  throw Error;
 };
 
 const copyFileToArchiveBucket = async (fileName: string) => {
