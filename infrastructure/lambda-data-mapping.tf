@@ -41,7 +41,8 @@ module "data_mapping" {
   }
 
   environment_variables = {
-    archive_bucket = aws_s3_bucket.archive_bucket.id
+    archive_bucket = aws_s3_bucket.archive_bucket.id,
+    product_database = aws_dynamodb_table.product_db.name
   }
 }
 #Created Policy for IAM Role
@@ -58,6 +59,11 @@ resource "aws_iam_policy" "data_mapping_policy" {
           "Effect" = "Allow"
           "Action" = "s3:GetObject"
           "Resource" = "${aws_s3_bucket.archive_bucket.arn}/*"
+        },
+        {
+          "Effect" = "Allow"
+          "Action" = ["dynamodb:PutItem","dynamodb:Query","dynamodb:Scan"]
+          "Resource" = "${aws_dynamodb_table.product_db.arn}"
         }
       ]
   })

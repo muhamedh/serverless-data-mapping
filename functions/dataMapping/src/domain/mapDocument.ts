@@ -1,10 +1,11 @@
 import { Product } from "src/types/product.type";
 import { readObject } from "../driven/s3Adapter";
-import xml2js from 'xml2js';
+import xml2js from "xml2js";
+import { putItem } from "src/driven/dynamoAdapter";
 
 function findKeyInObject(obj: any, targetKey: string): any | undefined {
   // Check if the current object is null or undefined
-  if (obj === null || typeof obj !== 'object') {
+  if (obj === null || typeof obj !== "object") {
     return undefined;
   }
 
@@ -29,9 +30,8 @@ function findKeyInObject(obj: any, targetKey: string): any | undefined {
 }
 
 const mapDocument = async (fileName: string) => {
-
   const objectContents = await readObject(process.env.archive_bucket, fileName);
-  const mappedDocument = await xml2js.parseStringPromise(objectContents)
+  const mappedDocument = await xml2js.parseStringPromise(objectContents);
 
   const finalDocument: Product = {
     transactionID: "",
@@ -41,36 +41,70 @@ const mapDocument = async (fileName: string) => {
         productName: "",
         productDescription: "",
         productImages: [],
-        productRoundel: ""
-      }
+        productRoundel: "",
+      },
     },
     SKUData: [],
-  }; 
+  };
 
-  finalDocument.transactionID = findKeyInObject(mappedDocument, 'TransactionID')[0];
-  finalDocument.productData.productID = findKeyInObject(mappedDocument, 'ProductID')[0];
-  finalDocument.productData.productInformation.productName = findKeyInObject(mappedDocument, 'ProductName')[0];
-  finalDocument.productData.productInformation.productDescription = findKeyInObject(mappedDocument, 'ProductDescription')[0];
-  finalDocument.productData.productInformation.productImages = findKeyInObject(mappedDocument, 'ProductImages')[0].Image;
-  finalDocument.productData.productInformation.productRoundel = findKeyInObject(mappedDocument, 'ProductRoundel')[0];
-  
+  finalDocument.transactionID = findKeyInObject(
+    mappedDocument,
+    "TransactionID"
+  )[0];
+  finalDocument.productData.productID = findKeyInObject(
+    mappedDocument,
+    "ProductID"
+  )[0];
+  finalDocument.productData.productInformation.productName = findKeyInObject(
+    mappedDocument,
+    "ProductName"
+  )[0];
+  finalDocument.productData.productInformation.productDescription =
+    findKeyInObject(mappedDocument, "ProductDescription")[0];
+  finalDocument.productData.productInformation.productImages = findKeyInObject(
+    mappedDocument,
+    "ProductImages"
+  )[0].Image;
+  finalDocument.productData.productInformation.productRoundel = findKeyInObject(
+    mappedDocument,
+    "ProductRoundel"
+  )[0];
+
   const numberOfSkus = mappedDocument.data?.SKUData[0].SKU.length;
-  for( let i = 0; i < numberOfSkus; i++){
+  for (let i = 0; i < numberOfSkus; i++) {
     finalDocument?.SKUData?.push({
       SKUNumber: "",
       SKUName: "",
       SKUDescription: "",
       SKUInventory: "",
       SKUImages: [],
-      SKUPrices: []
+      SKUPrices: [],
     });
-    const SKUNumber = findKeyInObject(mappedDocument.data?.SKUData[0].SKU[i], 'SKUNumber')[0];
-    const SKUName = findKeyInObject(mappedDocument.data?.SKUData[0].SKU[i], "SKUName")[0];
-    const SKUDescription = findKeyInObject(mappedDocument.data?.SKUData[0].SKU[i], "SKUDescription")[0];
-    const SKUInventory = findKeyInObject(mappedDocument.data?.SKUData[0].SKU[i], "InventoryStatus")[0];
-    const SKUImages = findKeyInObject(mappedDocument.data?.SKUData[0].SKU[i], "Image")
-    const SKUPrices = findKeyInObject(mappedDocument.data?.SKUData[0].SKU[i], "SKUPrice")
-    
+    const SKUNumber = findKeyInObject(
+      mappedDocument.data?.SKUData[0].SKU[i],
+      "SKUNumber"
+    )[0];
+    const SKUName = findKeyInObject(
+      mappedDocument.data?.SKUData[0].SKU[i],
+      "SKUName"
+    )[0];
+    const SKUDescription = findKeyInObject(
+      mappedDocument.data?.SKUData[0].SKU[i],
+      "SKUDescription"
+    )[0];
+    const SKUInventory = findKeyInObject(
+      mappedDocument.data?.SKUData[0].SKU[i],
+      "InventoryStatus"
+    )[0];
+    const SKUImages = findKeyInObject(
+      mappedDocument.data?.SKUData[0].SKU[i],
+      "Image"
+    );
+    const SKUPrices = findKeyInObject(
+      mappedDocument.data?.SKUData[0].SKU[i],
+      "SKUPrice"
+    );
+
     if (finalDocument && Array.isArray(finalDocument.SKUData)) {
       finalDocument.SKUData[i].SKUNumber = SKUNumber;
       finalDocument.SKUData[i].SKUName = SKUName;
@@ -80,9 +114,21 @@ const mapDocument = async (fileName: string) => {
       finalDocument.SKUData[i].SKUPrices = SKUPrices;
     }
   }
-  // TODO try catch block to send to error bucket
   // TODO send to DynamoDB
-  // TODO send to processed
+  const transactionID = finalDocument.transactionID;
+  const productId = finalDocument.productData.productID;
+  const skuNumber = "";
+  try {
+    await putItem(finalDocument.productData, transactionID, productId, skuNumber);
+    finalDocument.SKUData?.forEach(async (sku) => {
+      await putItem(sku, transactionID, productId, skuNumber);
+    });
+    // TODO send to processed bucket
+  } catch (e) {
+    //TODO throw in a way to send to error bucket
+    throw Error;
+  }
+  
   return null;
 };
 
