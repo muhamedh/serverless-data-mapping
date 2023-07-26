@@ -7,18 +7,19 @@ const docClient = DynamoDBDocumentClient.from(client);
 const putItem = async (item: any, transactionID: string, productId: string, skuNumber: string | undefined) => {
   const command = new PutCommand({
     TableName: process.env.product_database,
-    ConditionExpression: "attribute_not_exists(ProductID) OR :transactionID > #transaction",
-    ExpressionAttributeNames: {
-      '#transaction': 'transactionID'
-    },
-    ExpressionAttributeValues:{
-      ":transactionID" : transactionID
-    },
     Item: {
       data: item,
       transactionID: transactionID,
       ProductID: productId,
       SKUNumber: skuNumber,
+    },
+    ConditionExpression: "#transID <= :transactionID OR attribute_not_exists(productID)",
+    ExpressionAttributeNames: {
+      '#transID': 'transactionID',
+      '#productID': 'ProductID'
+    },
+    ExpressionAttributeValues:{
+      ":transactionID" : transactionID
     },
   });
 
