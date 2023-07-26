@@ -1,7 +1,7 @@
-import { Product } from "src/types/product.type";
+import { Product } from "../types/product.type";
 import { readObject } from "../driven/s3Adapter";
 import xml2js from "xml2js";
-import { putItem } from "src/driven/dynamoAdapter";
+import { putItem } from "../driven/dynamoAdapter";
 
 function findKeyInObject(obj: any, targetKey: string): any | undefined {
   // Check if the current object is null or undefined
@@ -30,6 +30,7 @@ function findKeyInObject(obj: any, targetKey: string): any | undefined {
 }
 
 const mapDocument = async (fileName: string) => {
+  console.log("Mapping document: " + fileName);
   const objectContents = await readObject(process.env.archive_bucket, fileName);
   const mappedDocument = await xml2js.parseStringPromise(objectContents);
 
@@ -115,6 +116,7 @@ const mapDocument = async (fileName: string) => {
     }
   }
   // TODO send to DynamoDB
+  console.log("Sending to DynamoDB");
   const transactionID = finalDocument.transactionID;
   const productId = finalDocument.productData.productID;
   const skuNumber = "";
