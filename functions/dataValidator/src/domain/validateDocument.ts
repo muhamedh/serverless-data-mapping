@@ -1,7 +1,7 @@
 import libxml from "libxmljs";
 import fs from "fs";
 import path from "path";
-import { readObject, copyFileToArchiveBucket } from "../driven/s3Adapter";
+import { readObject, copyFileToArchiveBucket, deleteFileFromArchiveBucket } from "../driven/s3Adapter";
 import { sendMessage } from "../driven/sqsAdapter";
 import { sendStatelessEvent } from "../driven/eventBridgeAdapter";
 import { S3Record } from "../types/s3.type";
@@ -71,13 +71,13 @@ const validateDocument = async (s3Record: S3Record) => {
     throw Error;
   }
 
-
-  //TODO copy file to archive bucket used for data reseeding
-  await copyFileToArchiveBucket(s3Record.s3.object.key);
+  const objectKey = s3Record.s3.object.key;
+  //copy file to archive bucket used for data reseeding
+  await copyFileToArchiveBucket(objectKey);
   //send message to data mapping sqs
-  await sendMessage({ fileName: s3Record.s3.object.key });
-  
-  // DEBUG -> console.log("validateDocument: " + response);
+  await sendMessage({ fileName: objectKey });
+  await deleteFileFromArchiveBucket(objectKey);
+  return null;
 };
 
 export { validateDocument };

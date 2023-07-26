@@ -26,7 +26,7 @@ describe("component tests for dataValidator lambda function", () => {
     eventBridgeMock.reset();
   });
 
-  it("should send message to entry-data-mapping sqs and copy object to archive bucket", async () => {
+  it("should send message to entry-data-mapping sqs, copy object to archive bucket and delete it from archive", async () => {
     const filePath = path.resolve(__dirname, "./helpers/productXMLMock.xml");
     const stream = sdkStreamMixin(fs.createReadStream(filePath));
     process.env.archive_bucket = 'dummy_archive_bucket_name';
@@ -44,6 +44,10 @@ describe("component tests for dataValidator lambda function", () => {
     expect(s3Mock.call(1).args[0].input).toEqual({
       Bucket: "dummy_archive_bucket_name",
       CopySource: "/dummy_arrival_bucket_name/product/123456789_1.xml",
+      Key: "product/123456789_1.xml",
+    });
+    expect(s3Mock.call(2).args[0].input).toEqual({
+      Bucket: "dummy_archive_bucket_name",
       Key: "product/123456789_1.xml",
     });
     expect(sqsMock.call(0).args[0].input).toEqual({

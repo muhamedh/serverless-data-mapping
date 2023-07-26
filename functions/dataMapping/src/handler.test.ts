@@ -1,7 +1,6 @@
 import { sqsArrivalMessage } from "./helpers/sqsArrivalMessageMock";
 import { mockClient } from "aws-sdk-client-mock";
 import { S3Client, GetObjectCommand, CopyObjectCommand } from "@aws-sdk/client-s3";
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
 import fs from "fs";
 import path from "path";

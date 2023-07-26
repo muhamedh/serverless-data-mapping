@@ -2,11 +2,12 @@
 
 exports[`component tests for dataValidator lambda function should map multi sku product 1`] = `
 {
-  "ConditionExpression": "transactionID < :transactionID",
+  "ConditionExpression": "attribute_not_exists(#transID) OR #transID <= :transactionID",
+  "ExpressionAttributeNames": {
+    "#transID": "transactionID",
+  },
   "ExpressionAttributeValues": {
-    ":transactionID": {
-      "S": "16459",
-    },
+    ":transactionID": "16459",
   },
   "Item": {
     "ProductID": "16111",
@@ -32,11 +33,12 @@ exports[`component tests for dataValidator lambda function should map multi sku 
 
 exports[`component tests for dataValidator lambda function should map multi sku product 2`] = `
 {
-  "ConditionExpression": "transactionID < :transactionID",
+  "ConditionExpression": "attribute_not_exists(#transID) OR #transID <= :transactionID",
+  "ExpressionAttributeNames": {
+    "#transID": "transactionID",
+  },
   "ExpressionAttributeValues": {
-    ":transactionID": {
-      "S": "16459",
-    },
+    ":transactionID": "16459",
   },
   "Item": {
     "ProductID": "16111",
@@ -75,11 +77,12 @@ exports[`component tests for dataValidator lambda function should map multi sku 
 
 exports[`component tests for dataValidator lambda function should map multi sku product 3`] = `
 {
-  "ConditionExpression": "transactionID < :transactionID",
+  "ConditionExpression": "attribute_not_exists(#transID) OR #transID <= :transactionID",
+  "ExpressionAttributeNames": {
+    "#transID": "transactionID",
+  },
   "ExpressionAttributeValues": {
-    ":transactionID": {
-      "S": "16459",
-    },
+    ":transactionID": "16459",
   },
   "Item": {
     "ProductID": "16111",
@@ -118,11 +121,12 @@ exports[`component tests for dataValidator lambda function should map multi sku 
 
 exports[`component tests for dataValidator lambda function should send message to entry-data-mapping sqs and copy object to archive bucket 1`] = `
 {
-  "ConditionExpression": "transactionID < :transactionID",
+  "ConditionExpression": "attribute_not_exists(#transID) OR #transID <= :transactionID",
+  "ExpressionAttributeNames": {
+    "#transID": "transactionID",
+  },
   "ExpressionAttributeValues": {
-    ":transactionID": {
-      "S": "16459",
-    },
+    ":transactionID": "16459",
   },
   "Item": {
     "ProductID": "16111",
@@ -148,11 +152,12 @@ exports[`component tests for dataValidator lambda function should send message t
 
 exports[`component tests for dataValidator lambda function should send message to entry-data-mapping sqs and copy object to archive bucket 2`] = `
 {
-  "ConditionExpression": "transactionID < :transactionID",
+  "ConditionExpression": "attribute_not_exists(#transID) OR #transID <= :transactionID",
+  "ExpressionAttributeNames": {
+    "#transID": "transactionID",
+  },
   "ExpressionAttributeValues": {
-    ":transactionID": {
-      "S": "16459",
-    },
+    ":transactionID": "16459",
   },
   "Item": {
     "ProductID": "16111",

@@ -69,6 +69,11 @@ resource "aws_iam_policy" "data_validator_policy" {
         },
         {
           "Effect" = "Allow"
+          "Action" = "s3:DeleteObject"
+          "Resource" = "${aws_s3_bucket.arrival_bucket.arn}/*"
+        },
+        {
+          "Effect" = "Allow"
           "Action" = "sqs:SendMessage*"
           "Resource" = "${aws_sqs_queue.data_mapping_sqs.arn}"
         },

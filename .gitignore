@@ -143,3 +143,6 @@ junit.xml
 tests/
 
 dist/
+
+#ignore generate files
+generated_files/
