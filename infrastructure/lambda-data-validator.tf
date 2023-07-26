@@ -13,7 +13,8 @@ module "data_validator" {
   }
   create_current_version_allowed_triggers = false
   cloudwatch_logs_retention_in_days = 5
-  maximum_retry_attempts = 0
+  maximum_retry_attempts = 1
+  dead_letter_target_arn = "${aws_sqs_queue.data_validator_dlq.arn}"
   allowed_triggers = {
     sqs = {
       service    = "sqs"
@@ -76,6 +77,11 @@ resource "aws_iam_policy" "data_validator_policy" {
           "Effect" = "Allow"
           "Action" = "sqs:SendMessage*"
           "Resource" = "${aws_sqs_queue.data_mapping_sqs.arn}"
+        },
+        {
+          "Effect" = "Allow"
+          "Action" = "sqs:SendMessage*"
+          "Resource" = "${aws_sqs_queue.data_validator_dlq.arn}"
         },
         {
           "Effect" = "Allow"

@@ -3,9 +3,10 @@ import { sqsAdapter } from "./driving/sqsAdapter";
 
 const handler = async (event: SQSEvent) => {
     try{
+        throw Error;
         await sqsAdapter(event);
     }catch(e){
-        return null;
+        throw Error;
     }
     
 }
