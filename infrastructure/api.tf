@@ -1,7 +1,7 @@
 resource "aws_api_gateway_rest_api" "product_api" {
   name        = "Product Information API"
   description = "API exposing mapped product information"
-  body        = data.template_file.aws_api_product_openapi_document
+  body        = data.template_file.aws_api_product_openapi_document.rendered
 }
 
 resource "aws_api_gateway_deployment" "product_api_deployment" {
