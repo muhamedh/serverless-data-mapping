@@ -4,7 +4,7 @@ import { PutCommand, DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
 
-const putItem = async (item: any, transactionID: string, productId: string, skuNumber: string) => {
+const putItem = async (item: any, transactionID: string, productId: string, skuNumber: string | undefined) => {
   const command = new PutCommand({
     TableName: process.env.product_database,
     Item: {
@@ -20,6 +20,7 @@ const putItem = async (item: any, transactionID: string, productId: string, skuN
     console.log(response);
     return response;
   } catch (e) {
+    console.log(e);
     throw Error;
   }
 };
