@@ -99,7 +99,7 @@ paths:
             \"KeyConditionExpression\": \"ProductID = :productId AND SKUNumber = :skuNumber\",\r\n   
             \"ExpressionAttributeValues\": {\r\n      
               \":productId\": {\"S\": \"$input.params('productId')\"},\r\n      
-              \":skuNumber\": {\"S\": \"$input.params('skuNumber')\"}\r\n   
+              \":skuNumber\": {\"S\": \"SKUNUMBER#$input.params('skuNumber')\"}\r\n   
             }\r\n}"
         passthroughBehavior: "when_no_templates"
         type: "aws"
