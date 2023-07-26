@@ -1,0 +1,272 @@
+openapi: 3.0.0
+servers: []
+info:
+  description: Retrive Products and SKUs
+  version: "1.0.0"
+  title: Data Mapping Service
+  contact:
+    email: muhamed.hamzic@stu.ibu.edu.ba
+tags:
+  - name: developers
+    description: Operations available to regular developers
+paths:
+  /{productId}/{skuNumber}:
+    get:
+      tags:
+        - developers
+      summary: gets product information for given ProductID and skuNumber
+      operationId: "getSkuPrice"
+      description: By passing in a product id and the sku number receive product and sku information
+      x-amazon-apigateway-auth:
+        type: AWS_IAM
+      parameters:
+        - name: "productId"
+          in: "path"
+          description: "the Productid that you want product information for"
+          required: true
+          schema:
+            type: "string"
+            format: "int64"
+        - name: "skuNumber"
+          in: "path"
+          description: "the skuNumber that you want prices for"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "404":
+          description: "when there are no product information for the product sku combination"
+        "200":
+          description: "product information matching the criteria"
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: "#/components/schemas/AllResponseType"
+        "400":
+          description: bad input parameter
+        "401":
+          description: not authorized
+        "500":
+          description: internal error
+      x-amazon-apigateway-integration:
+        credentials: ${API_GATEWAY_ROLE_ARN}
+        httpMethod: "POST"
+        timeoutInMillis: ${READ_TIMEOUT}
+        uri: arn:aws:apigateway:$${AWS::Region}:dynamodb:action/Query
+        responses:
+          default:
+            statusCode: "200"
+            responseTemplates:
+              application/json: "#set($inputRoot = $input.path('$'))\r\n
+ #if($input.path('$.Count') != 0)\r\n
+ {\r\n
+   \"data\": {\r\n
+      \"type\": \"SKUPrices\",\r\n
+      \"id\": \"$inputRoot.Items[0].productId.N_$inputRoot.Items[0].optionNumber.S\",\r\n
+      \"attributes\": {\r\n
+         \"skuPrices\": [\r\n
+            #foreach($item in $inputRoot.Items) {\r\n
+                \"productId\": $item.productId.N,\r\n
+                \"fasciaCode\": \"$item.fascia.S\",\r\n
+                \"optionNumber\": \"$item.optionNumber.S\",\r\n
+                    #if($item.now.M.toString() != \"\") \"now\": {\r\n
+                        \"startDate\": \"$item.now.M.startDate.S\",\r\n
+                        \"endDate\": \"$item.now.M.endDate.S\",\r\n
+                        \"currencyCode\": \"$item.now.M.currencyCode.S\",\r\n
+                        \"currencySymbol\": \"$item.now.M.currencySymbol.S\",\r\n
+                        \"basePrice\": $item.now.M.basePrice.N,\r\n
+                        \"suffixCode\": \"$item.now.M.suffixCode.S\",\r\n
+                        \"vatCode\": \"$item.now.M.vatCode.S\",\r\n
+                        \"outletCode\": \"$item.now.M.outletCode.S\",\r\n
+                        #if($item.now.M.origPrice.N.toString() != \"\") \"origPrice\": $item.now.M.origPrice.N, #end\r\n
+                        #if($item.now.M.savePrice.N.toString() != \"\") \"savePrice\": $item.now.M.savePrice.N, #end\r\n
+                        \r\n
+                        #if($item.now.M.productLevel.M.toString() != \"\") \"productLevel\": {\r\n
+                            #set($comma = \"\")\r\n
+                            #if($item.now.M.productLevel.M.displaySavePriceInd.S.toString() != \"\") \"displaySavePriceInd\": \"$item.now.M.productLevel.M.displaySavePriceInd.S\" #set($comma = \",\") #end \r\n
+                            #if($item.now.M.productLevel.M.savePercent.N.toString() != \"\") $${comma}\"savePercent\": $item.now.M.productLevel.M.savePercent.N #set($comma = \",\") #end \r\n
+                            #if($item.now.M.productLevel.M.savePrice.N.toString() != \"\") $${comma}\"savePrice\": $item.now.M.productLevel.M.savePrice.N #set($comma = \",\") #end \r\n
+                            #if($item.now.M.productLevel.M.wasFrom.N.toString() != \"\") $${comma}\"wasFrom\": $item.now.M.productLevel.M.wasFrom.N #set($comma = \",\") #end \r\n
+                            #if($item.now.M.productLevel.M.wasTo.N.toString() != \"\") $${comma}\"wasTo\": $item.now.M.productLevel.M.wasTo.N #set($comma = \",\") #end \r\n
+                            #if($item.now.M.productLevel.M.nowFrom.N.toString() != \"\") $${comma}\"nowFrom\": $item.now.M.productLevel.M.nowFrom.N #set($comma = \",\") #end \r\n
+                            #if($item.now.M.productLevel.M.nowTo.N.toString() != \"\") $${comma}\"nowTo\": $item.now.M.productLevel.M.nowTo.N #set($comma = \",\") #end \r\n
+                            #if($item.now.M.productLevel.M.saveUpToPrice.N.toString() != \"\") $${comma}\"saveUpToPrice\": $item.now.M.productLevel.M.saveUpToPrice.N #set($comma = \",\") #end \r\n
+                            },\r\n
+                        #end \r\n
+                        \"salesInd\": \"$item.now.M.salesInd.S\"\r\n
+                        } \r\n
+                    #end \r\n
+               #if($item.next.M.toString() != \"\") \r\n
+                #if($item.now.M.toString() != \"\") , #end  \r\n
+               \"next\": {\r\n
+                    \"startDate\": \"$item.next.M.startDate.S\",\r\n
+                    \"endDate\": \"$item.next.M.endDate.S\",\r\n
+                    \"currencyCode\": \"$item.next.M.currencyCode.S\",\r\n
+                    \"currencySymbol\": \"$item.next.M.currencySymbol.S\",\r\n
+                    \"basePrice\": $item.next.M.basePrice.N,\r\n
+                    \"suffixCode\": \"$item.next.M.suffixCode.S\",\r\n
+                    \"vatCode\": \"$item.next.M.vatCode.S\",\r\n
+                    \"outletCode\": \"$item.next.M.outletCode.S\",\r\n
+               #if($item.next.M.origPrice.N.toString() != \"\") \"origPrice\": $item.next.M.origPrice.N, #end \r\n
+               #if($item.next.M.savePrice.N.toString() != \"\") \"savePrice\": $item.next.M.savePrice.N, #end \r\n
+               #if($item.next.M.productLevel.M.toString() != \"\") \r\n
+                    \"productLevel\": {\r\n
+                    #set($comma = \"\")\r\n
+                    #if($item.next.M.productLevel.M.displaySavePriceInd.S.toString() != \"\") \"displaySavePriceInd\": \"$item.next.M.productLevel.M.displaySavePriceInd.S\" #set($comma = \",\") #end \r\n
+                    #if($item.next.M.productLevel.M.savePercent.N.toString() != \"\") $${comma}\"savePercent\": $item.next.M.productLevel.M.savePercent.N #set($comma = \",\") #end \r\n
+                    #if($item.next.M.productLevel.M.savePrice.N.toString() != \"\") $${comma}\"savePrice\": $item.next.M.productLevel.M.savePrice.N #set($comma = \",\") #end \r\n
+                    #if($item.next.M.productLevel.M.wasFrom.N.toString() != \"\") $${comma}\"wasFrom\": $item.next.M.productLevel.M.wasFrom.N #set($comma = \",\") #end \r\n
+                    #if($item.next.M.productLevel.M.wasTo.N.toString() != \"\") $${comma}\"wasTo\": $item.next.M.productLevel.M.wasTo.N #set($comma = \",\") #end \r\n
+                    #if($item.next.M.productLevel.M.nowFrom.N.toString() != \"\") $${comma}\"nowFrom\": $item.next.M.productLevel.M.nowFrom.N #set($comma = \",\") #end \r\n
+                    #if($item.next.M.productLevel.M.nowTo.N.toString() != \"\") $${comma}\"nowTo\": $item.next.M.productLevel.M.nowTo.N #set($comma = \",\") #end \r\n
+                    #if($item.next.M.productLevel.M.saveUpToPrice.N.toString() != \"\") $${comma}\"saveUpToPrice\": $item.next.M.productLevel.M.saveUpToPrice.N #set($comma = \",\") #end \r\n
+                    },\r\n
+                    #end \r\n
+                    \"salesInd\": \"$item.next.M.salesInd.S\"\r\n
+                 } #end\r\n
+             } #if($foreach.hasNext),#end\r\n
+       #end ]\r\n
+         }\r\n
+      }\r\n
+   }\r\n
+ #set($context.responseOverride.status = 200)\r\n
+#else\r\n
+#set($context.responseOverride.status = 404)\r\n
+#end\r\n
+"
+        requestTemplates:
+          application/json: "{\n   \
+            \"TableName\": \"${DYNAMO_PRODUCT_TABLE}\",\n   \
+            \"KeyConditionExpression\": \"#productId = :productId AND begins_with(#optionNumberFascia, :optionNumber)\",\n   \
+            \"ExpressionAttributeNames\": {\n      \
+            \"#productId\": \"productId\",\n      \
+            \"#optionNumberFascia\": \"optionNumberFascia\"\n   \
+            },\n   \
+            \"ExpressionAttributeValues\": {\n      \
+            \":productId\": {\"N\": \"$input.params('productId')\"},\n      \
+            \":optionNumber\": {\"S\": \"$input.params('optionNumber')\"}\n   \
+            }\n}"
+        passthroughBehavior: "when_no_templates"
+        type: "aws"
+components:
+  schemas:
+    AllResponseType:
+      required:
+        - "data"
+      type: "object"
+      properties:
+        data:
+          $ref: "#/components/schemas/AllData"
+    AllData:
+      required:
+        - "attributes"
+        - "id"
+        - "type"
+      type: "object"
+      properties:
+        type:
+          type: "string"
+          enum:
+            - "ProductInformation"
+          example: ProductInformation
+        id:
+          type: "string"
+          example: 1600581881
+          description: "This is the product id"
+        attributes:
+          properties:
+            SKUInformation:
+              $ref: "#/components/schemas/SKUInformationSummary"
+    SKUInformationSummary:
+      type: "object"
+      required:
+        - "productId"
+        - "skuNumber"
+      properties:
+        productId:
+          type: "string"
+        skuNumber:
+          type: "string"
+        SKUDetails:
+          $ref: "#/components/schemas/SKUDetails"
+    SKUDetails:
+      type: "object"
+      required:
+        - "skuName"
+        - "skuDescription"
+        - "skuPrice"
+        - "skuImages"
+        - "inventoryStatus"
+      properties:
+        skuName:
+          type: "string"
+        skuDescription:
+          type: "string"
+        skuPrice:
+          $ref: "#/components/schemas/SkuPrice"
+        skuImages:
+          $ref: "#/components/schemas/SkuImages"
+        inventoryStatus:
+          type: "string"
+    SkuPrice:
+      type: "object"
+      properties:
+        amount:
+          type: "number"
+        currencyCode:
+          type: "string"
+          enum:
+            - "£"
+            - "€"
+        onSaleDate:
+          type: "string"
+          format: "date-time"
+        offSaleDate: 
+          type: "string"
+          format: "date-time"
+    SkuImages:
+      type: "array"
+      items:
+        type: "string"
+x-amazon-apigateway-request-validators:
+  basic:
+    validateRequestBody: true
+    validateRequestParameters: true
+x-amazon-apigateway-request-validator: basic
+x-amazon-apigateway-gateway-responses:
+  BAD_REQUEST_BODY:
+    statusCode: 400
+    responseParameters:
+      gatewayresponse.header.x-correlation-id: "method.request.header.x-correlation-id"
+    responseTemplates:
+      application/json: '{ "errors" : [ { "code" : "BAD_REQUEST", "title": "$context.error.message", "detail" : "$context.error.validationErrorString", "meta": { "correlationId": "Please check the correlation id in the response header" }, "status": 400 } ] }'
+  BAD_REQUEST_PARAMETERS:
+    statusCode: 400
+    responseParameters:
+      gatewayresponse.header.x-correlation-id: "method.request.header.x-correlation-id"
+    responseTemplates:
+      application/json: '{ "errors" : [ { "code" : "BAD_REQUEST", "title": "$context.error.message", "detail" : "$context.error.validationErrorString", "meta": { "correlationId": "Please check the correlation id in the response header" }, "status": 400 } ] }'
+  DEFAULT_4XX:
+    statusCode: 400
+    responseParameters:
+      gatewayresponse.header.x-correlation-id: "method.request.header.x-correlation-id"
+    responseTemplates:
+      application/json: '{ "errors" : [ { "code" : "BAD_REQUEST", "title": "$context.error.message", "detail" : "$context.error.validationErrorString", "meta": { "correlationId": "Please check the correlation id in the response header" }, "status": 400 } ] }'
+  ACCESS_DENIED:
+    statusCode: 403
+    responseParameters:
+      gatewayresponse.header.x-correlation-id: "method.request.header.x-correlation-id"
+    responseTemplates:
+      application/json: '{ "errors" : [ { "code" : "ACCESS_DENIED", "title": "$context.error.message", "detail" : "$context.error.validationErrorString", "meta": { "correlationId": "Please check the correlation id in the response header" }, "status": 403 } ] }'
+  UNAUTHORIZED:
+    statusCode: 401
+    responseParameters:
+      gatewayresponse.header.x-correlation-id: "method.request.header.x-correlation-id"
+    responseTemplates:
+      application/json: '{ "errors" : [ { "code" : "UNAUTHORIZED", "title": "$context.error.message", "detail" : "$context.error.validationErrorString", "meta": { "correlationId": "Please check the correlation id in the response header" }, "status": 401 } ] }'
+  RESOURCE_NOT_FOUND:
+    statusCode: 404
+    responseParameters:
+      gatewayresponse.header.x-correlation-id: "method.request.header.x-correlation-id"
+    responseTemplates:
+      application/json: '{ "errors" : [ { "code" : "RESOURCE_NOT_FOUND", "title": "$context.error.message", "detail" : "$context.error.validationErrorString", "meta": { "correlationId": "Please check the correlation id in the response header" }, "status": 401 } ] }'

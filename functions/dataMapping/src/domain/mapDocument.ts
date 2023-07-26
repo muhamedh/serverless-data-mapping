@@ -80,7 +80,9 @@ const mapDocument = async (fileName: string) => {
       finalDocument.SKUData[i].SKUPrices = SKUPrices;
     }
   }
+  // TODO try catch block to send to error bucket
   // TODO send to DynamoDB
+  // TODO send to processed
   return null;
 };
 
