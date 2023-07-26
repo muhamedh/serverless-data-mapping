@@ -119,13 +119,13 @@ const mapDocument = async (fileName: string) => {
   console.log("Sending to DynamoDB");
   const transactionID = finalDocument.transactionID;
   const productId = finalDocument.productData.productID;
-  const skuNumber = "";
+  const skuNumber = "SKUNUMBER#";
   try {
     console.log("Sending to DynamoDB product information");
     await putItem(finalDocument.productData, transactionID, productId, skuNumber);
     finalDocument.SKUData?.forEach(async (sku) => {
       console.log("Sending to DynamoDB sku information" + skuNumber);
-      await putItem(sku, transactionID, productId, sku.SKUNumber);
+      await putItem(sku, transactionID, productId, skuNumber + sku.SKUNumber);
     });
     // TODO send to processed bucket
   } catch (e) {
