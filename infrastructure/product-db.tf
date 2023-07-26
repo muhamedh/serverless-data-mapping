@@ -3,6 +3,8 @@ resource "aws_dynamodb_table" "product_db" {
   billing_mode   = "PROVISIONED"
   read_capacity  = 10
   write_capacity = 10
+  stream_view_type = "NEW_IMAGE"
+  stream_enabled   = true
 
   # Define primary key
   hash_key       = "ProductID"
