@@ -6,7 +6,6 @@ resource "aws_api_gateway_rest_api" "product_api" {
 
 resource "aws_api_gateway_deployment" "product_api_deployment" {
   rest_api_id = aws_api_gateway_rest_api.product_api.id
-  stage_name  = "dev"
 }
 
 resource "aws_api_gateway_stage" "product_api_stage" {
