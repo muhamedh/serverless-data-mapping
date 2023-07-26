@@ -57,95 +57,50 @@ paths:
           default:
             statusCode: "200"
             responseTemplates:
-              application/json: "#set($inputRoot = $input.path('$'))\r\n
- #if($input.path('$.Count') != 0)\r\n
- {\r\n
-   \"data\": {\r\n
-      \"type\": \"SKUPrices\",\r\n
-      \"id\": \"$inputRoot.Items[0].productId.N_$inputRoot.Items[0].optionNumber.S\",\r\n
-      \"attributes\": {\r\n
-         \"skuPrices\": [\r\n
-            #foreach($item in $inputRoot.Items) {\r\n
-                \"productId\": $item.productId.N,\r\n
-                \"fasciaCode\": \"$item.fascia.S\",\r\n
-                \"optionNumber\": \"$item.optionNumber.S\",\r\n
-                    #if($item.now.M.toString() != \"\") \"now\": {\r\n
-                        \"startDate\": \"$item.now.M.startDate.S\",\r\n
-                        \"endDate\": \"$item.now.M.endDate.S\",\r\n
-                        \"currencyCode\": \"$item.now.M.currencyCode.S\",\r\n
-                        \"currencySymbol\": \"$item.now.M.currencySymbol.S\",\r\n
-                        \"basePrice\": $item.now.M.basePrice.N,\r\n
-                        \"suffixCode\": \"$item.now.M.suffixCode.S\",\r\n
-                        \"vatCode\": \"$item.now.M.vatCode.S\",\r\n
-                        \"outletCode\": \"$item.now.M.outletCode.S\",\r\n
-                        #if($item.now.M.origPrice.N.toString() != \"\") \"origPrice\": $item.now.M.origPrice.N, #end\r\n
-                        #if($item.now.M.savePrice.N.toString() != \"\") \"savePrice\": $item.now.M.savePrice.N, #end\r\n
-                        \r\n
-                        #if($item.now.M.productLevel.M.toString() != \"\") \"productLevel\": {\r\n
-                            #set($comma = \"\")\r\n
-                            #if($item.now.M.productLevel.M.displaySavePriceInd.S.toString() != \"\") \"displaySavePriceInd\": \"$item.now.M.productLevel.M.displaySavePriceInd.S\" #set($comma = \",\") #end \r\n
-                            #if($item.now.M.productLevel.M.savePercent.N.toString() != \"\") $${comma}\"savePercent\": $item.now.M.productLevel.M.savePercent.N #set($comma = \",\") #end \r\n
-                            #if($item.now.M.productLevel.M.savePrice.N.toString() != \"\") $${comma}\"savePrice\": $item.now.M.productLevel.M.savePrice.N #set($comma = \",\") #end \r\n
-                            #if($item.now.M.productLevel.M.wasFrom.N.toString() != \"\") $${comma}\"wasFrom\": $item.now.M.productLevel.M.wasFrom.N #set($comma = \",\") #end \r\n
-                            #if($item.now.M.productLevel.M.wasTo.N.toString() != \"\") $${comma}\"wasTo\": $item.now.M.productLevel.M.wasTo.N #set($comma = \",\") #end \r\n
-                            #if($item.now.M.productLevel.M.nowFrom.N.toString() != \"\") $${comma}\"nowFrom\": $item.now.M.productLevel.M.nowFrom.N #set($comma = \",\") #end \r\n
-                            #if($item.now.M.productLevel.M.nowTo.N.toString() != \"\") $${comma}\"nowTo\": $item.now.M.productLevel.M.nowTo.N #set($comma = \",\") #end \r\n
-                            #if($item.now.M.productLevel.M.saveUpToPrice.N.toString() != \"\") $${comma}\"saveUpToPrice\": $item.now.M.productLevel.M.saveUpToPrice.N #set($comma = \",\") #end \r\n
-                            },\r\n
-                        #end \r\n
-                        \"salesInd\": \"$item.now.M.salesInd.S\"\r\n
-                        } \r\n
-                    #end \r\n
-               #if($item.next.M.toString() != \"\") \r\n
-                #if($item.now.M.toString() != \"\") , #end  \r\n
-               \"next\": {\r\n
-                    \"startDate\": \"$item.next.M.startDate.S\",\r\n
-                    \"endDate\": \"$item.next.M.endDate.S\",\r\n
-                    \"currencyCode\": \"$item.next.M.currencyCode.S\",\r\n
-                    \"currencySymbol\": \"$item.next.M.currencySymbol.S\",\r\n
-                    \"basePrice\": $item.next.M.basePrice.N,\r\n
-                    \"suffixCode\": \"$item.next.M.suffixCode.S\",\r\n
-                    \"vatCode\": \"$item.next.M.vatCode.S\",\r\n
-                    \"outletCode\": \"$item.next.M.outletCode.S\",\r\n
-               #if($item.next.M.origPrice.N.toString() != \"\") \"origPrice\": $item.next.M.origPrice.N, #end \r\n
-               #if($item.next.M.savePrice.N.toString() != \"\") \"savePrice\": $item.next.M.savePrice.N, #end \r\n
-               #if($item.next.M.productLevel.M.toString() != \"\") \r\n
-                    \"productLevel\": {\r\n
-                    #set($comma = \"\")\r\n
-                    #if($item.next.M.productLevel.M.displaySavePriceInd.S.toString() != \"\") \"displaySavePriceInd\": \"$item.next.M.productLevel.M.displaySavePriceInd.S\" #set($comma = \",\") #end \r\n
-                    #if($item.next.M.productLevel.M.savePercent.N.toString() != \"\") $${comma}\"savePercent\": $item.next.M.productLevel.M.savePercent.N #set($comma = \",\") #end \r\n
-                    #if($item.next.M.productLevel.M.savePrice.N.toString() != \"\") $${comma}\"savePrice\": $item.next.M.productLevel.M.savePrice.N #set($comma = \",\") #end \r\n
-                    #if($item.next.M.productLevel.M.wasFrom.N.toString() != \"\") $${comma}\"wasFrom\": $item.next.M.productLevel.M.wasFrom.N #set($comma = \",\") #end \r\n
-                    #if($item.next.M.productLevel.M.wasTo.N.toString() != \"\") $${comma}\"wasTo\": $item.next.M.productLevel.M.wasTo.N #set($comma = \",\") #end \r\n
-                    #if($item.next.M.productLevel.M.nowFrom.N.toString() != \"\") $${comma}\"nowFrom\": $item.next.M.productLevel.M.nowFrom.N #set($comma = \",\") #end \r\n
-                    #if($item.next.M.productLevel.M.nowTo.N.toString() != \"\") $${comma}\"nowTo\": $item.next.M.productLevel.M.nowTo.N #set($comma = \",\") #end \r\n
-                    #if($item.next.M.productLevel.M.saveUpToPrice.N.toString() != \"\") $${comma}\"saveUpToPrice\": $item.next.M.productLevel.M.saveUpToPrice.N #set($comma = \",\") #end \r\n
-                    },\r\n
-                    #end \r\n
-                    \"salesInd\": \"$item.next.M.salesInd.S\"\r\n
-                 } #end\r\n
-             } #if($foreach.hasNext),#end\r\n
-       #end ]\r\n
-         }\r\n
-      }\r\n
-   }\r\n
- #set($context.responseOverride.status = 200)\r\n
-#else\r\n
-#set($context.responseOverride.status = 404)\r\n
-#end\r\n
-"
+              application/json: "#set($inputRoot = $input.path('$'))\r\n #if($input.path('$.Count') != 0)\r\n 
+              {\r\n 
+                \"data\": 
+                  {\r\n 
+                    \"type\": \"ProductInformation\",\r\n 
+                    \"id\": \"$inputRoot.Items[0].ProductID.S\",\r\n 
+                    \"attributes\": 
+                      {\r\n 
+                        \"SKUInformation\": 
+                          {\r\n \r\n 
+                            \"productId\": \"$inputRoot.Items[0].ProductID.S\",\r\n 
+                            \"skuNumber\": \"$inputRoot.Items[0].SKUNumber.S\",\r\n 
+                            \"SKUDetails\": 
+                              {\r\n\t
+                                #if($inputRoot.Items[0].data.M.SKUName.S.toString() != \"\")\r\n\t\t
+                                  \"skuName\": \"$inputRoot.Items[0].data.M.SKUName.S\"\r\n\t
+                                #end\r\n\t
+                                #if($inputRoot.Items[0].data.M.SKUDescription.S.toString() != \"\")\r\n\t\t,\r\n\t\t
+                                  \"skuDescription\": \"$inputRoot.Items[0].data.M.SKUDescription.S\"\r\n\t
+                                #end\r\n\t
+                                #if($inputRoot.Items[0].data.M.SKUInventory.S.toString() != \"\")\r\n\t\t,\r\n\t\t
+                                  \"inventoryStatus\": \"$inputRoot.Items[0].data.M.SKUInventory.S\"\r\n\t
+                                #end\r\n\t\t
+                                #if($inputRoot.Items[0].data.M.SKUPrices.L != \"\")\r\n\t\t,\r\n\t\t
+                                  #set($skuPrices = $inputRoot.Items[0].data.M.get(\"SKUPrices\").L)\r\n\t\t
+                                    #foreach($skuPrice in $skuPrices)\r\n\t\t
+                                      \"skuPrice\" : 
+                                        {\r\n\t\t\t
+                                          \"currencyCode\": $skuPrice.M.CurrencyCode.SS,\r\n\t\t\t
+                                          \"onSaleDate\": $skuPrice.M.OnSaleDate.SS,\r\n\t\t\t
+                                          \"amount\": $skuPrice.M.Amount.NS,\r\n\t\t\t
+                                          \"offSaleDate\": $skuPrice.M.OffSaleDate.SS\r\n\t\t
+                                        }\r\n\t\t
+                                    #end\r\n\t
+                                #end\r\n }\r\n  \r\n }\r\n }\r\n }\r\n }\r\n 
+                        #set($context.responseOverride.status = 200)\r\n #else\r\n #set($context.responseOverride.status = 404)\r\n #end"
         requestTemplates:
-          application/json: "{\n   \
-            \"TableName\": \"${DYNAMO_PRODUCT_TABLE}\",\n   \
-            \"KeyConditionExpression\": \"#productId = :productId AND begins_with(#optionNumberFascia, :optionNumber)\",\n   \
-            \"ExpressionAttributeNames\": {\n      \
-            \"#productId\": \"productId\",\n      \
-            \"#optionNumberFascia\": \"optionNumberFascia\"\n   \
-            },\n   \
-            \"ExpressionAttributeValues\": {\n      \
-            \":productId\": {\"N\": \"$input.params('productId')\"},\n      \
-            \":optionNumber\": {\"S\": \"$input.params('optionNumber')\"}\n   \
-            }\n}"
+          application/json: "{\r\n   
+            \"TableName\": \"${DYNAMO_PRODUCT_TABLE}\",\r\n   
+            \"KeyConditionExpression\": \"ProductID = :productId AND SKUNumber = :skuNumber\",\r\n   
+            \"ExpressionAttributeValues\": {\r\n      
+              \":productId\": {\"S\": \"$input.params('productId')\"},\r\n      
+              \":skuNumber\": {\"S\": \"$input.params('skuNumber')\"}\r\n   
+            }\r\n}"
         passthroughBehavior: "when_no_templates"
         type: "aws"
 components:
