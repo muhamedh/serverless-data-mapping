@@ -31,7 +31,7 @@ function findKeyInObject(obj: any, targetKey: string): any | undefined {
 
 const mapDocument = async (fileName: string) => {
   console.log("Mapping document: " + fileName);
-  const objectContents = await readObject(process.env.archive_bucket, fileName);
+  const objectContents = await readObject(process.env.archive_bucket, fileName) as string;
   const mappedDocument = await xml2js.parseStringPromise(objectContents);
 
   const finalDocument: Product = {
