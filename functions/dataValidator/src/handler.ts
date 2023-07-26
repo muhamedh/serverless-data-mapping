@@ -3,13 +3,20 @@ import { sqsAdapter } from "./driving/sqsAdapter";
 
 const handler = async (event: SQSEvent) => {
     try{
-        return null;
+        throw Error;
         await sqsAdapter(event);
     }catch(e){
+        const response = {
+            batchItemFailures: [
+                {
+                    itemIdentifier: event.Records[0].messageId
+                }
+            ]
+        }
         console.log(e);
-        return null;
+        return response;
     }
-    
+    return null;
 }
 
 export { handler };    
