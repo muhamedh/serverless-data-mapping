@@ -50,7 +50,7 @@ resource "aws_iam_policy" "product_api_gw_policy" {
       {
         Action: ["dynamodb:GetItem","dynamodb:Query","dynamodb:Scan"],
         Effect: "Allow",
-        Resource: "${aws_dynamodb_table.product_db.arn}/*"
+        Resource: "${aws_dynamodb_table.product_db.arn}"
       }
     ]
   })
