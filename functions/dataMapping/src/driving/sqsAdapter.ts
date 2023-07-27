@@ -7,7 +7,6 @@ const sqsAdapter = async (event: SQSEvent) => {
   for (const sqsMessage of event.Records) {
     const fileName = JSON.parse(sqsMessage.body)?.fileName;
     try{
-      throw Error;
       await mapDocument(fileName);
     } catch(e){
       console.log(e);
