@@ -8,7 +8,7 @@ resource "aws_schemas_schema" "wrong_format_stateless_event_schema" {
   type          = "OpenApi3"
   description   = "The schema definition for wrong_format_stateless_event_schema"
 
-  content = jsonencode(file("./apispec/events/wrong-format-stateless-event.json"))
+  content = (file("./apispec/events/wrong-format-stateless-event.json"))
 }
 
 resource "aws_schemas_schema" "delete_stateless_event_schema" {
@@ -17,7 +17,7 @@ resource "aws_schemas_schema" "delete_stateless_event_schema" {
   type          = "OpenApi3"
   description   = "The schema definition for delete_stateless_event_schema"
 
-  content = jsonencode(file("./apispec/events/delete-stateless-event.json"))
+  content = (file("./apispec/events/delete-stateless-event.json"))
 }
 
 resource "aws_schemas_schema" "insert_statefull_event_schema" {
@@ -26,7 +26,7 @@ resource "aws_schemas_schema" "insert_statefull_event_schema" {
   type          = "OpenApi3"
   description   = "The schema definition for insert_statefull_event_schema"
 
-  content = jsonencode(file("./apispec/events/insert-statefull-event.json"))
+  content = (file("./apispec/events/insert-statefull-event.json"))
 }
 
 resource "aws_schemas_schema" "update_statefull_event_schema" {
@@ -35,5 +35,5 @@ resource "aws_schemas_schema" "update_statefull_event_schema" {
   type          = "OpenApi3"
   description   = "The schema definition for update_statefull_event_schema"
 
-  content = jsonencode(file("./apispec/events/update-stateless-event.json"))
+  content = (file("./apispec/events/update-stateless-event.json"))
 }
