@@ -44,6 +44,7 @@ module "data_validator" {
     entry_data_mapping_sqs = aws_sqs_queue.data_mapping_sqs.url
     arrival_bucket = aws_s3_bucket.arrival_bucket.id
     archive_bucket = aws_s3_bucket.archive_bucket.id
+    error_bucket = aws_s3_bucket.error_bucket.id
     event_bus_name = module.eventbridge.eventbridge_bus_name
   }
 }
@@ -66,6 +67,11 @@ resource "aws_iam_policy" "data_validator_policy" {
           "Effect" = "Allow"
           "Action" = "s3:PutObject"
           "Resource" = "${aws_s3_bucket.archive_bucket.arn}/*"
+        },
+        {
+          "Effect" = "Allow"
+          "Action" = "s3:PutObject"
+          "Resource" = "${aws_s3_bucket.error_bucket.arn}/*"
         },
         {
           "Effect" = "Allow"

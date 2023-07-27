@@ -26,6 +26,7 @@ module "stream_processor" {
     dynamodb = {
       event_source_arn  = aws_dynamodb_table.product_db.stream_arn
       starting_position = "LATEST"
+      destination_arn_on_failure = aws_sqs_queue.stream_processor_dlq.arn
       filter_criteria = {
         pattern = jsonencode({
           eventName : ["INSERT", "REMOVE", "MODIFY"]

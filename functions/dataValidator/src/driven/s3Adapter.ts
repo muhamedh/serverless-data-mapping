@@ -54,4 +54,20 @@ const deleteFileFromArrivalBucket = async (fileName: string) => {
   }
 };
 
-export { copyFileToArchiveBucket, deleteFileFromArrivalBucket, readObject };
+const moveToErrorBucket = async (fileName: string) => {
+  console.log("moving to error bucket -> " + fileName);
+  const input = {
+    Bucket: process.env.error_bucket,
+    CopySource: `/${process.env.arrival_bucket}/${fileName}`,
+    Key: fileName,
+  };
+  const command = new CopyObjectCommand(input);
+  try {
+    await s3Client.send(command);
+  } catch (e) {
+    //TODO throw in a way to end up in dlq
+    throw Error;
+  }
+}
+
+export { copyFileToArchiveBucket, deleteFileFromArrivalBucket, readObject, moveToErrorBucket };

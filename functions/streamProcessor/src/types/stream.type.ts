@@ -3,6 +3,7 @@ export type Stream = {
 }
 
 export type StreamRecords = {
+    eventID: string;
     eventName: string;
     dynamodb: object;
 }

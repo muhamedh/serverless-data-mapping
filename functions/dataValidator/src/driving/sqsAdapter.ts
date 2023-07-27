@@ -1,16 +1,23 @@
-import { S3NotificationEvent, SQSEvent, SQSRecord } from "aws-lambda";
+import { SQSEvent } from "aws-lambda";
 import { validateDocument } from "../domain/validateDocument";
 import { S3Record } from "../types/s3.type";
+import { responseFailures } from "../types/response.type";
 const sqsAdapter = async (event: SQSEvent) => {
-  //TODO write a test to check if validateDocument function gets called x times if x sqs are in event.Records[x]
-  //console.log(event);
+  const response: responseFailures = { batchItemFailures: [] };
   for (const sqsMessage of event.Records) {
     const s3Notifications: S3Record[] = JSON.parse(sqsMessage.body).Records;
-    for (const s3Notification of s3Notifications) {
-      //console.log(s3Notification);
-      await validateDocument(s3Notification);
+    try {
+      for (const s3Notification of s3Notifications) {
+        await validateDocument(s3Notification);
+      }
+    } catch (e) {
+      console.log(e);
+      response.batchItemFailures.push({
+        itemIdentifier: sqsMessage.messageId,
+      });
     }
   }
+  return response;
 };
 
 export { sqsAdapter };
