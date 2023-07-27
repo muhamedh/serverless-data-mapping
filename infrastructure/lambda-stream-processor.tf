@@ -7,8 +7,6 @@ module "stream_processor" {
   handler        = "handler.handler"
   runtime        = "nodejs18.x"
   create_package = false
-  publish = true
-  snap_start = true
   s3_existing_package = {
     bucket = "data-mapping-lambda-code"
     key    = "streamProcessorCode.zip"
