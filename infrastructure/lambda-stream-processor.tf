@@ -58,6 +58,11 @@ resource "aws_iam_policy" "stream_processor_policy" {
           "Effect" = "Allow"
           "Action" = "events:PutEvents"
           "Resource" = "${module.eventbridge.eventbridge_bus_arn}"
+        },
+        {
+          "Effect" = "Allow"
+          "Action" = "sqs:SendMessage*"
+          "Resource" = "${aws_sqs_queue.stream_processor_dlq.arn}"
         }
       ]
   })
