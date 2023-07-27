@@ -3,7 +3,7 @@ import { sqsAdapter } from "./driving/sqsAdapter";
 
 const handler = async (event: SQSEvent) => {
     try{
-        await sqsAdapter(event);
+        return await sqsAdapter(event);
     }catch(e){
         console.log(e);
         return null;

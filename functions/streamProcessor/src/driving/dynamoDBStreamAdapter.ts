@@ -6,7 +6,6 @@ const dynamoDBStreamAdapter = async (streamEvents: Stream) => {
   const response: responseFailures = { batchItemFailures: [] };
   streamEvents.Records.forEach(async (event: StreamRecords) => {
     try {
-      throw Error;
       await processStream(event);
     } catch (e) {
       console.log(e);

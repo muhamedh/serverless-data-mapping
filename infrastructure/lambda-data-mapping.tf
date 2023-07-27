@@ -42,6 +42,8 @@ module "data_mapping" {
 
   environment_variables = {
     archive_bucket = aws_s3_bucket.archive_bucket.id,
+    error_bucket = aws_s3_bucket.error_bucket.id,
+    processed_bucket = aws_s3_bucket.processed_bucket.id,
     product_database = aws_dynamodb_table.product_db.name
   }
 }

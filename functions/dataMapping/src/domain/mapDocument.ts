@@ -1,5 +1,5 @@
 import { Product } from "../types/product.type";
-import { readObject } from "../driven/s3Adapter";
+import { deleteFileFromArchiveBucket, moveToErrorBucket, moveToProcessedBucket, readObject } from "../driven/s3Adapter";
 import xml2js from "xml2js";
 import { putItem } from "../driven/dynamoAdapter";
 
@@ -31,9 +31,17 @@ function findKeyInObject(obj: any, targetKey: string): any | undefined {
 
 const mapDocument = async (fileName: string) => {
   console.log("Mapping document: " + fileName);
-  const objectContents = await readObject(process.env.archive_bucket, fileName) as string;
-  const mappedDocument = await xml2js.parseStringPromise(objectContents);
-
+  let mappedDocument;
+  try{
+    const objectContents = await readObject(process.env.archive_bucket, fileName) as string;
+    mappedDocument = await xml2js.parseStringPromise(objectContents);  
+  }catch(e){
+    console.log(e);
+    await moveToErrorBucket(fileName);
+    await deleteFileFromArchiveBucket(fileName);
+    throw Error;
+  }
+  
   const finalDocument: Product = {
     transactionID: "",
     productData: {
@@ -115,7 +123,7 @@ const mapDocument = async (fileName: string) => {
       finalDocument.SKUData[i].SKUPrices = SKUPrices;
     }
   }
-  // TODO send to DynamoDB
+  // send to DynamoDB
   console.log("Sending to DynamoDB");
   const transactionID = finalDocument.transactionID;
   const productId = finalDocument.productData.productID;
@@ -127,9 +135,10 @@ const mapDocument = async (fileName: string) => {
       console.log("Sending to DynamoDB sku information" + skuNumber);
       await putItem(sku, transactionID, productId, skuNumber + sku.SKUNumber);
     });
-    // TODO send to processed bucket
+    await moveToProcessedBucket(fileName);
   } catch (e) {
-    //TODO throw in a way to send to error bucket
+    await moveToErrorBucket(fileName);
+    await deleteFileFromArchiveBucket(fileName);
     console.log(e);
     throw Error;
   }
