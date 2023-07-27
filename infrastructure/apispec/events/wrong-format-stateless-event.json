@@ -1,0 +1,71 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "DataValidatorStatelessEvents"
+  },
+  "paths": {},
+  "components": {
+    "schemas": {
+      "AWSEvent": {
+        "type": "object",
+        "required": ["detail-type", "detail", "source"],
+        "properties": {
+          "detail": {
+            "$ref": "#/components/schemas/DataValidatorDetail"
+          },
+          "source": {
+            "type": "string",
+            "enum": ["data-validator"]
+          },
+          "detail-type": {
+            "type": "string",
+            "enum": ["Invalid XML format."]
+          },
+          "account": {
+            "type": "string",
+            "description": "Provided by AWS"
+          },
+          "id": {
+            "type": "string",
+            "description": "Provided by AWS"
+          },
+          "region": {
+            "type": "string",
+            "description": "Provided by AWS"
+          },
+          "resources": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "time": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Provided by AWS"
+          },
+          "version": {
+            "type": "string",
+            "enum": ["0"],
+            "description": "Provided by AWS"
+          }
+        }
+      },
+      "DataValidatorDetail": {
+        "type": "object",
+        "required": ["timeOfEvent", "objectKey"],
+        "properties": {
+          "timeOfEvent": {
+            "type": "string",
+            "description": "Time of event when it occured."
+          },
+          "objectKey": {
+            "type": "string",
+            "description": "On which objectKey has the service errored."
+          }
+        }
+      }
+    }
+  }
+}

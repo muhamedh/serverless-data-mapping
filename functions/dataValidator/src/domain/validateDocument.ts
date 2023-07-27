@@ -19,13 +19,12 @@ const getXSDSchema = () => {
     XSD_SCHEMA = fs.readFileSync(filePath, "utf8");
     return libxml.parseXml(XSD_SCHEMA);
   } catch (err) {
-    //TODO throw in a way to go to DLQ
     console.error(err);
     throw Error;
   }
 };
 
-const performValidation = async (documentContents: string) => {
+const performValidation = async (documentContents: string, objectKey: string) => {
   let parsed_document = null;
   let parsing_result = null;
   try {
@@ -34,6 +33,7 @@ const performValidation = async (documentContents: string) => {
     console.log(e);
     await sendStatelessEvent(EVENT_SOURCE, EVENT_DETAIL_TYPE, {
       timeOfEvent: new Date().toISOString(),
+      objectKey: objectKey
     });
     return false;
   }
@@ -44,13 +44,13 @@ const performValidation = async (documentContents: string) => {
     parsing_result = parsed_document.validate(parsed_xsd_schema);
   } catch (e) {
     console.log(e);
-    //TODO throw in a way for dlq
     throw Error;
   }
 
   if (!parsing_result) {
     await sendStatelessEvent(EVENT_SOURCE, EVENT_DETAIL_TYPE, {
       timeOfEvent: new Date().toISOString(),
+      objectKey: objectKey
     });
     return false;
   }
@@ -68,7 +68,7 @@ const validateDocument = async (s3Record: S3Record) => {
     s3Record.s3.object.key
   );
 
-  if(!await performValidation(documentContents)){
+  if(!await performValidation(documentContents, objectKey)){
     await moveToErrorBucket(objectKey);
     await deleteFileFromArrivalBucket(objectKey);
     throw Error;

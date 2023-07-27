@@ -1,5 +1,6 @@
 export type StatelessEventDetail = {
     timeOfEvent: string;
+    objectKey: string;
 }
 
 export type StatelessEvent = {

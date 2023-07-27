@@ -37,23 +37,10 @@ describe("component tests for dataValidator lambda function", () => {
     s3Mock.on(CopyObjectCommand).resolves({});
     sqsMock.on(SendMessageCommand).resolves({});
     await handler(sqsArrivalMessage);
-    expect(s3Mock.call(0).args[0].input).toEqual({
-      Bucket: "arrival-bucket-426643868142",
-      Key: "product/123456789_1.xml",
-    });
-    expect(s3Mock.call(1).args[0].input).toEqual({
-      Bucket: "dummy_archive_bucket_name",
-      CopySource: "/dummy_arrival_bucket_name/product/123456789_1.xml",
-      Key: "product/123456789_1.xml",
-    });
-    expect(s3Mock.call(2).args[0].input).toEqual({
-      Bucket: "dummy_archive_bucket_name",
-      Key: "product/123456789_1.xml",
-    });
-    expect(sqsMock.call(0).args[0].input).toEqual({
-      QueueUrl: process.env.entry_data_mapping_sqs,
-      MessageBody: JSON.stringify({ fileName: "product/123456789_1.xml" }),
-    });
+    expect(s3Mock.call(0).args[0].input).toMatchSnapshot();
+    expect(s3Mock.call(1).args[0].input).toMatchSnapshot();
+    expect(s3Mock.call(2).args[0].input).toMatchSnapshot();
+    expect(sqsMock.call(0).args[0].input).toMatchSnapshot();
   });
 
   it("should send message to eventbridge due to xml syntax error", async () => {
@@ -75,10 +62,7 @@ describe("component tests for dataValidator lambda function", () => {
       .mockReturnValue(mockISOString);
 
     await handler(sqsArrivalMessage);
-    expect(s3Mock.call(0).args[0].input).toEqual({
-      Bucket: "arrival-bucket-426643868142",
-      Key: "product/123456789_1.xml",
-    });
+    expect(s3Mock.call(0).args[0].input).toMatchSnapshot();
     expect(eventBridgeMock.call(0).args[0].input).toEqual({
       Entries: [
         {

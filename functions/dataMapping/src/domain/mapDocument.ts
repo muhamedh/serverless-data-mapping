@@ -135,15 +135,13 @@ const mapDocument = async (fileName: string) => {
       console.log("Sending to DynamoDB sku information" + skuNumber);
       await putItem(sku, transactionID, productId, skuNumber + sku.SKUNumber);
     });
-    await moveToProcessedBucket(fileName);
+    return await moveToProcessedBucket(fileName);
   } catch (e) {
     await moveToErrorBucket(fileName);
     await deleteFileFromArchiveBucket(fileName);
     console.log(e);
     throw Error;
-  }
-  
-  return null;
+  }   
 };
 
 export { mapDocument };

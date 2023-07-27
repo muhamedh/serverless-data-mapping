@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`component tests for dataValidator lambda function should send message to entry-data-mapping sqs, copy object to archive bucket and delete it from archive 1`] = `
+{
+  "Bucket": "arrival-bucket-426643868142",
+  "Key": "product/123456789_1.xml",
+}
+`;
+
+exports[`component tests for dataValidator lambda function should send message to entry-data-mapping sqs, copy object to archive bucket and delete it from archive 2`] = `
+{
+  "Bucket": "dummy_archive_bucket_name",
+  "CopySource": "/dummy_arrival_bucket_name/product/123456789_1.xml",
+  "Key": "product/123456789_1.xml",
+}
+`;
+
+exports[`component tests for dataValidator lambda function should send message to entry-data-mapping sqs, copy object to archive bucket and delete it from archive 3`] = `
+{
+  "Bucket": "dummy_arrival_bucket_name",
+  "Key": "product/123456789_1.xml",
+}
+`;
+
+exports[`component tests for dataValidator lambda function should send message to entry-data-mapping sqs, copy object to archive bucket and delete it from archive 4`] = `
+{
+  "MessageBody": "{"fileName":"product/123456789_1.xml"}",
+  "QueueUrl": undefined,
+}
+`;

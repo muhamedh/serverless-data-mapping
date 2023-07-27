@@ -1,0 +1,62 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "StreamProcessorRemoveEvent"
+    },
+    "paths": {},
+    "components": {
+      "schemas": {
+        "AWSEvent": {
+          "type": "object",
+          "required": ["detail-type", "detail", "source"],
+          "properties": {
+            "detail": {
+              "$ref": "#/components/schemas/StreamProcessorDetail"
+            },
+            "source": {
+              "type": "string",
+              "enum": ["stream-processor"]
+            },
+            "detail-type": {
+              "type": "string",
+              "enum": ["dataRemove"]
+            },
+            "account": {
+              "type": "string",
+              "description": "Provided by AWS"
+            },
+            "id": {
+              "type": "string",
+              "description": "Provided by AWS"
+            },
+            "region": {
+              "type": "string",
+              "description": "Provided by AWS"
+            },
+            "resources": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "time": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Provided by AWS"
+            },
+            "version": {
+              "type": "string",
+              "enum": ["0"],
+              "description": "Provided by AWS"
+            }
+          }
+        },
+        "StreamProcessorDetail": {
+          "type": "string",
+          "description": "JSON object stringified containing the productID and the SKUNumber of the removed record"
+        }
+      }
+    }
+  }
+  
