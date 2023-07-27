@@ -7,6 +7,10 @@ module "data_validator" {
   handler        = "handler.handler"
   runtime        = "nodejs18.x"
   create_package = false
+  publish = true
+  snap_start {
+    apply_on = "PublishedVersions"
+  }
   s3_existing_package = {
     bucket = "data-mapping-lambda-code"
     key    = "dataValidatorCode.zip"

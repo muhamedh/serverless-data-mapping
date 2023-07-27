@@ -6,6 +6,10 @@ module "data_mapping" {
   description    = "Data mapping Lambda"
   handler        = "handler.handler"
   runtime        = "nodejs18.x"
+  publish = true
+  snap_start {
+    apply_on = "PublishedVersions"
+  }
   create_package = false
   s3_existing_package = {
     bucket = "data-mapping-lambda-code"
