@@ -64,6 +64,11 @@ resource "aws_iam_policy" "data_mapping_policy" {
         },
         {
           "Effect" = "Allow"
+          "Action" = "s3:PutObject"
+          "Resource" = ["${aws_s3_bucket.error_bucket.arn}/*", "${aws_s3_bucket.processed_bucket.arn}/*"]
+        },
+        {
+          "Effect" = "Allow"
           "Action" = ["dynamodb:PutItem","dynamodb:Query","dynamodb:Scan"]
           "Resource" = "${aws_dynamodb_table.product_db.arn}"
         }

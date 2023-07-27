@@ -37,7 +37,6 @@ const copyFileToArchiveBucket = async (fileName: string) => {
   try {
     await s3Client.send(command);
   } catch (e) {
-    //TODO throw in a way to end up in dlq
     console.log(e);
     throw Error;
   }
@@ -54,7 +53,7 @@ const moveToErrorBucket = async (fileName: string) => {
   try {
     await s3Client.send(command);
   } catch (e) {
-    //TODO throw in a way to end up in dlq
+    console.log(e);
     throw Error;
   }
 };
@@ -70,7 +69,7 @@ const moveToProcessedBucket = async (fileName: string) => {
   try {
     await s3Client.send(command);
   } catch (e) {
-    //TODO throw in a way to end up in dlq
+    console.log(e);
     throw Error;
   }
 };
