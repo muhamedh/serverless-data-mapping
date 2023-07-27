@@ -1,14 +1,20 @@
-
-import { Stream, StreamRecords } from "src/types/stream.type";
+import { Stream, StreamRecords } from "../types/stream.type";
 import { processStream } from "../domain/processStream";
+import { responseFailures } from "../types/response.type";
 
 const dynamoDBStreamAdapter = async (streamEvents: Stream) => {
-
-  streamEvents.Records.forEach(async (event: StreamRecords)=>{
-    await processStream(event);
-  })
-  
-  
+  const response: responseFailures = { batchItemFailures: [] };
+  streamEvents.Records.forEach(async (event: StreamRecords) => {
+    try {
+      await processStream(event);
+    } catch (e) {
+      console.log(e);
+      response.batchItemFailures.push({
+        itemIdentifier: event.eventID,
+      });
+    }
+  });
+  return response;
 };
 
 export { dynamoDBStreamAdapter };

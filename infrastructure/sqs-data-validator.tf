@@ -3,7 +3,7 @@ resource "aws_sqs_queue" "data_validator_sqs" {
   name = "entry-data-validator-sqs"
   redrive_policy = jsonencode({
     deadLetterTargetArn = aws_sqs_queue.data_validator_dlq.arn
-    maxReceiveCount = 4
+    maxReceiveCount = 2
   })
 }
 

@@ -68,7 +68,7 @@ const validateDocument = async (s3Record: S3Record) => {
     s3Record.s3.object.key
   );
 
-  if(await performValidation(documentContents)){
+  if(!await performValidation(documentContents)){
     await moveToErrorBucket(objectKey);
     await deleteFileFromArrivalBucket(objectKey);
     throw Error;

@@ -24,6 +24,8 @@ module "stream_processor" {
 
   event_source_mapping = {
     dynamodb = {
+      maximum_retry_attempts = 2
+      function_response_types = ["ReportBatchItemFailures"]
       event_source_arn  = aws_dynamodb_table.product_db.stream_arn
       starting_position = "LATEST"
       destination_arn_on_failure = aws_sqs_queue.stream_processor_dlq.arn
