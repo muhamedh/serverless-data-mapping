@@ -12,8 +12,8 @@ module "stream_processor" {
     key    = "streamProcessorCode.zip"
   }
   create_current_version_allowed_triggers = false
-  cloudwatch_logs_retention_in_days = 5
-  maximum_retry_attempts = 0
+  cloudwatch_logs_retention_in_days       = 5
+  maximum_retry_attempts                  = 0
 
   allowed_triggers = {
     dynamodb = {
@@ -24,10 +24,10 @@ module "stream_processor" {
 
   event_source_mapping = {
     dynamodb = {
-      maximum_retry_attempts = 2
-      function_response_types = ["ReportBatchItemFailures"]
-      event_source_arn  = aws_dynamodb_table.product_db.stream_arn
-      starting_position = "LATEST"
+      maximum_retry_attempts     = 2
+      function_response_types    = ["ReportBatchItemFailures"]
+      event_source_arn           = aws_dynamodb_table.product_db.stream_arn
+      starting_position          = "LATEST"
       destination_arn_on_failure = aws_sqs_queue.stream_processor_dlq.arn
       filter_criteria = {
         pattern = jsonencode({
@@ -57,13 +57,13 @@ resource "aws_iam_policy" "stream_processor_policy" {
       "Version" = "2012-10-17"
       "Statement" = [
         {
-          "Effect" = "Allow"
-          "Action" = "events:PutEvents"
+          "Effect"   = "Allow"
+          "Action"   = "events:PutEvents"
           "Resource" = "${module.eventbridge.eventbridge_bus_arn}"
         },
         {
-          "Effect" = "Allow"
-          "Action" = "sqs:SendMessage*"
+          "Effect"   = "Allow"
+          "Action"   = "sqs:SendMessage*"
           "Resource" = "${aws_sqs_queue.stream_processor_dlq.arn}"
         }
       ]

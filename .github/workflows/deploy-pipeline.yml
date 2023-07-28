@@ -120,7 +120,6 @@ jobs:
       - name: Test up dir
         run: |
           cd ../
-
   deploy-service-dev-stage:
     needs: ['transpile-and-upload-data-validator', 'transpile-and-upload-data-mapping', 'transpile-and-upload-stream-processor']
     runs-on: ubuntu-latest
@@ -130,7 +129,7 @@ jobs:
         env:
           tfc_token: ${{ secrets.TF_API_TOKEN }}
         run: |
-          curl --header "Authorization:Bearer $tfc_token" --header "Content-Type:application/vnd.api+json" --request POST --data @infrastructure/json_payload.json https://app.terraform.io/api/v2/runs -o run_data.json
+          curl --header "Authorization:Bearer $tfc_token" --header "Content-Type:application/vnd.api+json" --request POST --data @infrastructure/json_payload_dev.json https://app.terraform.io/api/v2/runs -o run_data.json
       - name: Check if applied finished
         env:
           tfc_token: ${{ secrets.TF_API_TOKEN }}
@@ -138,10 +137,8 @@ jobs:
           x=1
           applied_const_str="applied"
           run_id=$(jq --raw-output '.data.id' run_data.json)
-          echo $run_id
           url=https://app.terraform.io/api/v2/runs/$run_id
-          echo $url
-          while [ $x -le 20 ] 
+          while [ $x -le 30 ] 
           do
             curl --header "Authorization: Bearer $tfc_token" --header "Content-Type:application/vnd.api+json" $url -o get_response.json
             cat get_response.json
@@ -155,7 +152,6 @@ jobs:
             x=$(( $x + 1 ))
             sleep 5
           done
-
   end-to-end-tests:
     needs: ['deploy-service-dev-stage']
     runs-on: ubuntu-latest
@@ -170,3 +166,35 @@ jobs:
       - name: Deploy to production environment
         run: |
           echo "Running deploy to production"
+  # deploy-service-prod:
+  #   needs: ['end-to-end-tests']
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Trigger TFC run
+  #       env:
+  #         tfc_token: ${{ secrets.TF_API_TOKEN }}
+  #       run: |
+  #         curl --header "Authorization:Bearer $tfc_token" --header "Content-Type:application/vnd.api+json" --request POST --data @infrastructure/json_payload.json https://app.terraform.io/api/v2/runs -o run_data.json
+  #     - name: Check if applied finished
+  #       env:
+  #         tfc_token: ${{ secrets.TF_API_TOKEN }}
+  #       run: |
+  #         x=1
+  #         applied_const_str="applied"
+  #         run_id=$(jq --raw-output '.data.id' run_data.json)
+  #         url=https://app.terraform.io/api/v2/runs/$run_id
+  #         while [ $x -le 20 ] 
+  #         do
+  #           curl --header "Authorization: Bearer $tfc_token" --header "Content-Type:application/vnd.api+json" $url -o get_response.json
+  #           cat get_response.json
+  #           current_state=$(jq --raw-output '.data.attributes.status' get_response.json)
+  #           echo "Checking if apply is done [($x)]"
+  #           echo $current_state
+  #           if [ "$current_state" = "$applied_const_str" ] ;then
+  #             echo "Run has been applied, continuing...."
+  #             break
+  #           fi
+  #           x=$(( $x + 1 ))
+  #           sleep 5
+  #         done

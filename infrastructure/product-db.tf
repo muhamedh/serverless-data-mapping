@@ -1,23 +1,23 @@
 resource "aws_dynamodb_table" "product_db" {
-  name           = "product_db"
-  billing_mode   = "PROVISIONED"
-  read_capacity  = 5
-  write_capacity = 5
+  name             = "product_db"
+  billing_mode     = "PROVISIONED"
+  read_capacity    = 5
+  write_capacity   = 5
   stream_view_type = "NEW_IMAGE"
   stream_enabled   = true
 
   # Define primary key
-  hash_key       = "ProductID"
-  range_key      = "SKUNumber"
+  hash_key  = "ProductID"
+  range_key = "SKUNumber"
 
   attribute {
     name = "ProductID"
-    type = "S"  # S represents String data type
+    type = "S" # S represents String data type
   }
 
   attribute {
     name = "SKUNumber"
-    type = "S"  # S represents String data type
+    type = "S" # S represents String data type
   }
 
   lifecycle {
