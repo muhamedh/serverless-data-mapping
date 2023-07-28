@@ -139,7 +139,7 @@ jobs:
           applied_const_str="applied"
           run_id=$(jq '.data.id' run_data.json)
           echo $run_id
-          url=https://app.terraform.io/api/v2/runs/"$run_id"
+          url=https://app.terraform.io/api/v2/runs/$run_id
           echo $url
           while [ $x -le 20 ] 
           do
