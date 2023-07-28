@@ -146,8 +146,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Start e2e run
+        run: |
+          echo "Running e2e..."
   deploy-service-prod:
     needs: ['end-to-end-tests']
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to production environment
+        run: |
+          echo "Running deploy to production"
