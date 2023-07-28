@@ -158,43 +158,20 @@ jobs:
     steps:
       - name: Start e2e run
         run: |
-          echo "Running e2e..."
+          echo "Uploading file to S3 bucket"
+          aws s3 cp ./10000_1.xml s3://dev-arrival-bucket-426643868142/product/
+          echo "Give service time to process file"
+          sleep 2
+          echo "Sending request to API gateway"
+          response=curl -X GET "https://rw6e59xnkd.execute-api.us-east-1.amazonaws.com/dev/10000/OM_kp]e"
+          echo $response
   deploy-service-prod:
     needs: ['end-to-end-tests']
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to production environment
+      - uses: actions/checkout@v3
+      - name: Trigger TFC run
+        env:
+          tfc_token: ${{ secrets.TF_API_TOKEN }}
         run: |
-          echo "Running deploy to production"
-  # deploy-service-prod:
-  #   needs: ['end-to-end-tests']
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: Trigger TFC run
-  #       env:
-  #         tfc_token: ${{ secrets.TF_API_TOKEN }}
-  #       run: |
-  #         curl --header "Authorization:Bearer $tfc_token" --header "Content-Type:application/vnd.api+json" --request POST --data @infrastructure/json_payload.json https://app.terraform.io/api/v2/runs -o run_data.json
-  #     - name: Check if applied finished
-  #       env:
-  #         tfc_token: ${{ secrets.TF_API_TOKEN }}
-  #       run: |
-  #         x=1
-  #         applied_const_str="applied"
-  #         run_id=$(jq --raw-output '.data.id' run_data.json)
-  #         url=https://app.terraform.io/api/v2/runs/$run_id
-  #         while [ $x -le 20 ] 
-  #         do
-  #           curl --header "Authorization: Bearer $tfc_token" --header "Content-Type:application/vnd.api+json" $url -o get_response.json
-  #           cat get_response.json
-  #           current_state=$(jq --raw-output '.data.attributes.status' get_response.json)
-  #           echo "Checking if apply is done [($x)]"
-  #           echo $current_state
-  #           if [ "$current_state" = "$applied_const_str" ] ;then
-  #             echo "Run has been applied, continuing...."
-  #             break
-  #           fi
-  #           x=$(( $x + 1 ))
-  #           sleep 5
-  #         done
+          curl --header "Authorization:Bearer $tfc_token" --header "Content-Type:application/vnd.api+json" --request POST --data @infrastructure/json_payload.json https://app.terraform.io/api/v2/runs
