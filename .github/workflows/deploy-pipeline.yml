@@ -143,7 +143,7 @@ jobs:
             current_state=$(jq '.data.attributes.status' get_response.json)
             echo "Checking if apply is done [($x)] -> Current state: [($current_state)]"
             if [ "$current_state" == "$applied_const_str" ]; then
-              echo "Run has been applied, continuing..."
+              echo "Run has been applied, continuing...."
               break
             fi
             x=$(( $x + 1 ))
