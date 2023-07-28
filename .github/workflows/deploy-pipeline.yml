@@ -145,6 +145,7 @@ jobs:
             if [ "$current_state" == "$applied_const_str" ]; then
               echo "Run has been applied, continuing..."
               break
+            fi
             x=$(( $x + 1 ))
             sleep 5
           done
