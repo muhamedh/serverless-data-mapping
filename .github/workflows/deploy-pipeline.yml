@@ -137,7 +137,9 @@ jobs:
         run: |
           x=1
           applied_const_str="applied"
-          run_id=$(jq '.data.id' run_data.json)
+          run_id=$(jq --raw-output '.data.id' run_data.json)
+          run_id="${run_id#?}"
+          run_id="${run_id%?}"
           echo $run_id
           url=https://app.terraform.io/api/v2/runs/$run_id
           echo $url
@@ -145,7 +147,7 @@ jobs:
           do
             curl --header "Authorization: Bearer $tfc_token" --header "Content-Type:application/vnd.api+json" $url -o get_response.json
             cat get_response.json
-            current_state=$(jq '.data.attributes.status' get_response.json)
+            current_state=$(jq --raw-output '.data.attributes.status' get_response.json)
             echo "Checking if apply is done [($x)]"
             echo $current_state
             if [ "$current_state" = "$applied_const_str" ] ;then
