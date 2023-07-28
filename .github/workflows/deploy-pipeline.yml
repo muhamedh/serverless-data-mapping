@@ -132,6 +132,8 @@ jobs:
         run: |
           curl --header "Authorization:Bearer $tfc_token" --header "Content-Type:application/vnd.api+json" --request POST --data @infrastructure/json_payload.json https://app.terraform.io/api/v2/runs -o run_data.json
       - name: Check if applied finished
+        env:
+          tfc_token: ${{ secrets.TF_API_TOKEN }}
         run: |
           x=1
           applied_const_str="applied"
