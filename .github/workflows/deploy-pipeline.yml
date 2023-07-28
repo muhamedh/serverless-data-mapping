@@ -140,6 +140,7 @@ jobs:
           while [ $x -le 20 ] 
           do
             curl --header "Authorization: Bearer $tfc_token" --header "Content-Type:application/vnd.api+json" --request GET "https://app.terraform.io/api/v2/runs/$run_id" -o get_response.json
+            cat get_response.json
             current_state=$(jq '.data.attributes.status' get_response.json)
             echo "Checking if apply is done [($x)]"
             echo $current_state
