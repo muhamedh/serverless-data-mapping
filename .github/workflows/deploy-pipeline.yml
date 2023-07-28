@@ -138,8 +138,6 @@ jobs:
           x=1
           applied_const_str="applied"
           run_id=$(jq --raw-output '.data.id' run_data.json)
-          run_id="${run_id#?}"
-          run_id="${run_id%?}"
           echo $run_id
           url=https://app.terraform.io/api/v2/runs/$run_id
           echo $url
