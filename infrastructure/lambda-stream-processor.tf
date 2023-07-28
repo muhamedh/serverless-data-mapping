@@ -1,8 +1,7 @@
 module "stream_processor" {
   source  = "terraform-aws-modules/lambda/aws"
   version = "5.2.0"
-
-  function_name  = "stream-processor"
+  function_name  =  var.environment == "dev" ? "dev-stream-processor" : "prod-stream-processor"
   description    = "Stream processor Lambda"
   handler        = "handler.handler"
   runtime        = "nodejs18.x"
@@ -48,7 +47,7 @@ module "stream_processor" {
 }
 #Created Policy for IAM Role
 resource "aws_iam_policy" "stream_processor_policy" {
-  name        = "stream-processor-policy"
+  name        =  var.environment == "dev" ? "dev-stream-processor-policy" : "prod-stream-processor-policy"
   description = "A policy which encompases all needed permissions."
 
 

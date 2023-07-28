@@ -1,6 +1,6 @@
 # Create a new SQS queue
 resource "aws_sqs_queue" "data_validator_sqs" {
-  name = "entry-data-validator-sqs"
+  name = var.environment == "dev" ? "dev-entry-data-validator-sqs" : "prod-entry-data-validator-sqs"
   redrive_policy = jsonencode({
     deadLetterTargetArn = aws_sqs_queue.data_validator_dlq.arn
     maxReceiveCount     = 2

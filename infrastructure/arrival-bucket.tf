@@ -1,6 +1,6 @@
 # Create a new S3 bucket
 resource "aws_s3_bucket" "arrival_bucket" {
-  bucket = "arrival-bucket-${data.aws_caller_identity.current.account_id}"
+  bucket = var.environment == "dev" ? "dev-arrival-bucket-${data.aws_caller_identity.current.account_id}" : "prod-arrival-bucket-${data.aws_caller_identity.current.account_id}"
 }
 
 # Create a new notification for the SQS queue when a new object is created and set the SQS as target

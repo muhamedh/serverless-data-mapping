@@ -1,8 +1,7 @@
 module "data_mapping" {
   source  = "terraform-aws-modules/lambda/aws"
   version = "5.2.0"
-
-  function_name  = "data-mapping"
+  function_name  =  var.environment == "dev" ? "dev-data-mapping" : "prod-data-mapping"
   description    = "Data mapping Lambda"
   handler        = "handler.handler"
   runtime        = "nodejs18.x"
@@ -37,7 +36,7 @@ module "data_mapping" {
   ]
 
   tags = {
-    Name = "data-mapping"
+    Name =  var.environment == "dev" ? "dev-data-mapping" : "prod-data-mapping"
   }
 
   environment_variables = {
@@ -49,7 +48,7 @@ module "data_mapping" {
 }
 #Created Policy for IAM Role
 resource "aws_iam_policy" "data_mapping_policy" {
-  name        = "data-mapping-policy"
+  name        = var.environment == "dev" ? "dev-data-mapping-policy" : "prod-data-mapping-policy"
   description = "A policy which encompases all needed permissions"
 
 

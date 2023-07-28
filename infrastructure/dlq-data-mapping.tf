@@ -1,3 +1,3 @@
 resource "aws_sqs_queue" "data_maping_dlq" {
-  name = "data-mapping-DLQ"
+  name = var.environment == "dev" ? "dev-data-mapping-DLQ" : "prod-data-mapping-DLQ"
 }

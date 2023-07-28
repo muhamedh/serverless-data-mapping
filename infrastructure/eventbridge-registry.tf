@@ -1,6 +1,5 @@
 resource "aws_schemas_registry" "data_mapping_schemas_registry" {
   name = var.environment == "dev" ? "dev_data_mapping_schemas_registry" : "prod_data_mapping_schemas_registry"
-
 }
 
 resource "aws_schemas_schema" "wrong_format_stateless_event_schema" {

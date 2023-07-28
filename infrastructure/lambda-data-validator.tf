@@ -1,8 +1,7 @@
 module "data_validator" {
   source  = "terraform-aws-modules/lambda/aws"
   version = "5.2.0"
-
-  function_name  = "data-validator"
+  function_name  =  var.environment == "dev" ? "dev-data-validator" : "prod-data-validator"
   description    = "Data validator Lambda"
   handler        = "handler.handler"
   runtime        = "nodejs18.x"
@@ -37,7 +36,7 @@ module "data_validator" {
   ]
 
   tags = {
-    Name = "data-validator"
+    Name = var.environment == "dev" ? "dev-data-validator" : "prod-data-validator"
   }
 
   environment_variables = {
@@ -50,7 +49,7 @@ module "data_validator" {
 }
 #Created Policy for IAM Role
 resource "aws_iam_policy" "data_validator_policy" {
-  name        = "data-validator-policy"
+  name        =  var.environment == "dev" ? "dev-data-validator-policy" : "prod-data-validator-policy"
   description = "A policy which encompases all needed permissions."
 
 

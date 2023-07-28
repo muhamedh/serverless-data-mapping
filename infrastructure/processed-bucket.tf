@@ -1,3 +1,3 @@
 resource "aws_s3_bucket" "processed_bucket" {
-  bucket = "processed-bucket-${data.aws_caller_identity.current.account_id}"
+  bucket = var.environment == "dev" ? "dev-processed-bucket-${data.aws_caller_identity.current.account_id}" : "prod-processed-bucket-${data.aws_caller_identity.current.account_id}"
 }

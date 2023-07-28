@@ -1,5 +1,5 @@
 resource "aws_dynamodb_table" "product_db" {
-  name             = "product_db"
+  name             = var.environment == "dev" ? "dev-product_db" : "prod-product_db"
   billing_mode     = "PROVISIONED"
   read_capacity    = 5
   write_capacity   = 5
@@ -33,7 +33,7 @@ resource "aws_appautoscaling_target" "product_table_read_target" {
 }
 
 resource "aws_appautoscaling_policy" "product_table_read_policy" {
-  name               = "DynamoDBReadCapacityUtilization:${aws_appautoscaling_target.product_table_read_target.resource_id}"
+  name               =  var.environment == "dev" ? "dev-DynamoDBReadCapacityUtilization:${aws_appautoscaling_target.product_table_read_target.resource_id}" : "prod-DynamoDBReadCapacityUtilization:${aws_appautoscaling_target.product_table_read_target.resource_id}"
   policy_type        = "TargetTrackingScaling"
   resource_id        = aws_appautoscaling_target.product_table_read_target.resource_id
   scalable_dimension = aws_appautoscaling_target.product_table_read_target.scalable_dimension
@@ -57,7 +57,7 @@ resource "aws_appautoscaling_target" "product_table_write_target" {
 }
 
 resource "aws_appautoscaling_policy" "product_table_write_policy" {
-  name               = "DynamoDBWriteCapacityUtilization:${aws_appautoscaling_target.product_table_write_target.resource_id}"
+  name               = var.environment == "dev" ? "dev-DynamoDBWriteCapacityUtilization:${aws_appautoscaling_target.product_table_write_target.resource_id}" : "prod-DynamoDBWriteCapacityUtilization:${aws_appautoscaling_target.product_table_write_target.resource_id}"
   policy_type        = "TargetTrackingScaling"
   resource_id        = aws_appautoscaling_target.product_table_write_target.resource_id
   scalable_dimension = aws_appautoscaling_target.product_table_write_target.scalable_dimension
