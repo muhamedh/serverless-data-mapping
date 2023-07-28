@@ -134,14 +134,17 @@ jobs:
       - name: Check if applied finished
         run: |
           x=1
+          applied_const_str="applied"
           run_id=$(jq '.data.id' run_data.json)
           echo $run_id
-          while [ $x -le 10 ] 
+          while [ $x -le 20 ] 
           do
             curl --header "Authorization: Bearer $tfc_token" --header "Content-Type:application/vnd.api+json" --request GET "https://app.terraform.io/api/v2/runs/$run_id" -o get_response.json
-            current_state=$(jq '.data.status' get_response.json)
-            echo "Checking if apply is done... ($x)"
-            echo $current_state
+            current_state=$(jq '.data.attributes.status' get_response.json)
+            echo "Checking if apply is done [($x)] -> Current state: [($current_state)]"
+            if [ "$current_state" == "$applied_const_str" ]; then
+              echo "Run has been applied, continuing..."
+              break
             x=$(( $x + 1 ))
             sleep 5
           done
