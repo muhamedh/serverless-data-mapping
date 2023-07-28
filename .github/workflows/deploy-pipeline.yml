@@ -121,7 +121,7 @@ jobs:
         run: |
           cd ../
 
-  deploy-service:
+  deploy-service-dev-stage:
     needs: ['transpile-and-upload-data-validator', 'transpile-and-upload-data-mapping', 'transpile-and-upload-stream-processor']
     runs-on: ubuntu-latest
     steps:
@@ -130,4 +130,18 @@ jobs:
         env:
           tfc_token: ${{ secrets.TF_API_TOKEN }}
         run: |
-          curl --header "Authorization:Bearer $tfc_token" --header "Content-Type:application/vnd.api+json" --request POST --data @infrastructure/json_payload.json https://app.terraform.io/api/v2/runs
+          curl --header "Authorization:Bearer $tfc_token" --header "Content-Type:application/vnd.api+json" --request POST --data @infrastructure/json_payload.json https://app.terraform.io/api/v2/runs -o run_data.json
+      - name: Check if applied finished
+        run: |
+          x=1
+          while [ $x -le 10 ]
+          do
+            echo "Checking if apply is done... ($x)"
+            x=$(( $x + 1 ))
+            sleep 5
+          done
+
+  end-to-end-tests:
+    needs: ['deploy-service-dev-stage']
+  deploy-service-prod:
+    needs: ['end-to-end-tests']
