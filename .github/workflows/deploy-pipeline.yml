@@ -143,5 +143,11 @@ jobs:
 
   end-to-end-tests:
     needs: ['deploy-service-dev-stage']
+    runs-on: ubuntu-latest
+    steps:
+      - name: Start e2e run
   deploy-service-prod:
     needs: ['end-to-end-tests']
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to production environment
