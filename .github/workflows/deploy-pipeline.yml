@@ -168,7 +168,7 @@ jobs:
           echo "Give service time to process file"
           sleep 10
           echo "Sending request to API gateway"
-          curl -X GET "https://rw6e59xnkd.execute-api.us-east-1.amazonaws.com/dev/10000/123" -o get_response.json
+          curl "https://rw6e59xnkd.execute-api.us-east-1.amazonaws.com/dev/10000/123" --user "$AWS_ACCESS_KEY_ID":"$AWS_SECRET_ACCESS_KEY" --aws-sigv4 "aws:amz:us-east-1:execute-api" -o get_response.json
           echo "Request send successfully"
           diff -u <(jq -S . expected_output.json) <(jq -S . get_response.json)
 
