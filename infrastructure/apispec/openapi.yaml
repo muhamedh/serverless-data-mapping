@@ -78,7 +78,7 @@ paths:
               #set($skuPrices = $inputRoot.Items[0].data.M.get(\"SKUPrices\").L)\r\n\t\t 
               #foreach($skuPrice in $skuPrices)\r\n\t\t 
               \"skuPrice\" : {\r\n\t\t\t\r\n\t\t\t\t
-              \"currencyCode\": $skuPrice.M.CurrencyCode.L[0].S,\r\n\t\t\t\r\n\t\t\t
+              \"currencyCode\": \"$skuPrice.M.CurrencyCode.L[0].S\",\r\n\t\t\t\r\n\t\t\t
               #if($skuPrice.M.OnSaleDate.L[0].S.toString() == \"\")\r\n\t\t\t\t
               \"onSaleDate\": \"\",\r\n\t\t\t
               #end \r\n\t\t\t
@@ -90,7 +90,7 @@ paths:
               \"offSaleDate\": $skuPrice.M.OnSaleDate.L[0].S,\r\n\t\t\t
               #end\r\n\t\t\t
               #if($skuPrice.M.OffSaleDate.L[0].S.toString() == \"\")\r\n\t\t\t\t
-              \"offSaleDate\": \"\",\r\n\t\t\t#end\r\n\t\t }\r\n\t\t 
+              \"offSaleDate\": \"\"\r\n\t\t\t#end\r\n\t\t }\r\n\t\t 
               #end\r\n\t 
               #end\r\n }\r\n  \r\n }\r\n }\r\n }\r\n }\r\n 
               #set($context.responseOverride.status = 200)\r\n #else\r\n #set($context.responseOverride.status = 404)\r\n #end\r\n \r\n "
