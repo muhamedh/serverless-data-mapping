@@ -168,7 +168,7 @@ jobs:
           echo "Give service time to process file"
           sleep 10
           echo "Sending request to API gateway"
-          response=$(curl -X GET "https://rw6e59xnkd.execute-api.us-east-1.amazonaws.com/dev/10000/OM_kp\]e")
+          response=$(curl -X GET 'https://rw6e59xnkd.execute-api.us-east-1.amazonaws.com/dev/10000/OM_kp]e')
           echo $response
           output=$(diff -u <(jq -S . expected_output.json) <(jq -S . $response))
 
