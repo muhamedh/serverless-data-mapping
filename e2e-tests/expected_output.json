@@ -1,0 +1,23 @@
+{
+    "data":{
+       "type":"ProductInformation",
+       "id":"10000",
+       "attributes":{
+          "SKUInformation":{
+             "productId":"10000",
+             "skuNumber":"SKUNUMBER#OM_kp]e",
+             "SKUDetails":{
+                "skuName":"reprehension unqualifying spatular guisard",
+                "skuDescription":"retortion gynophagite acquittal antipetalous forestless Balawa evergreenite undescendible resource tsuba ultratrivial steward perch persister privation hexapodal Micawberism",
+                "inventoryStatus":"InStock",
+                "skuPrice":{
+                   "currencyCode":"USD",
+                   "onSaleDate":"",
+                   "amount":10.99,
+                   "offSaleDate":""
+                }
+             }
+          }
+       }
+    }
+ }

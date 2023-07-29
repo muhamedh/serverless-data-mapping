@@ -59,40 +59,41 @@ paths:
             responseTemplates:
               application/json: "#set($inputRoot = $input.path('$'))\r\n #if($input.path('$.Count') != 0)\r\n 
               {\r\n 
-                \"data\": 
-                  {\r\n 
-                    \"type\": \"ProductInformation\",\r\n 
-                    \"id\": \"$inputRoot.Items[0].ProductID.S\",\r\n 
-                    \"attributes\": 
-                      {\r\n 
-                        \"SKUInformation\": 
-                          {\r\n \r\n 
-                            \"productId\": \"$inputRoot.Items[0].ProductID.S\",\r\n 
-                            \"skuNumber\": \"$inputRoot.Items[0].SKUNumber.S\",\r\n 
-                            \"SKUDetails\": 
-                              {\r\n\t
-                                #if($inputRoot.Items[0].data.M.SKUName.S.toString() != \"\")\r\n\t\t
-                                  \"skuName\": \"$inputRoot.Items[0].data.M.SKUName.S\"\r\n\t
-                                #end\r\n\t
-                                #if($inputRoot.Items[0].data.M.SKUDescription.S.toString() != \"\")\r\n\t\t,\r\n\t\t
-                                  \"skuDescription\": \"$inputRoot.Items[0].data.M.SKUDescription.S\"\r\n\t
-                                #end\r\n\t
-                                #if($inputRoot.Items[0].data.M.SKUInventory.S.toString() != \"\")\r\n\t\t,\r\n\t\t
-                                  \"inventoryStatus\": \"$inputRoot.Items[0].data.M.SKUInventory.S\"\r\n\t
-                                #end\r\n\t\t
-                                #if($inputRoot.Items[0].data.M.SKUPrices.L != \"\")\r\n\t\t,\r\n\t\t
-                                  #set($skuPrices = $inputRoot.Items[0].data.M.get(\"SKUPrices\").L)\r\n\t\t
-                                    #foreach($skuPrice in $skuPrices)\r\n\t\t
-                                      \"skuPrice\" : 
-                                        {\r\n\t\t\t
-                                          \"currencyCode\": $skuPrice.M.CurrencyCode.SS,\r\n\t\t\t
-                                          \"onSaleDate\": $skuPrice.M.OnSaleDate.SS,\r\n\t\t\t
-                                          \"amount\": $skuPrice.M.Amount.NS,\r\n\t\t\t
-                                          \"offSaleDate\": $skuPrice.M.OffSaleDate.SS\r\n\t\t
-                                        }\r\n\t\t
-                                    #end\r\n\t
-                                #end\r\n }\r\n  \r\n }\r\n }\r\n }\r\n }\r\n 
-                        #set($context.responseOverride.status = 200)\r\n #else\r\n #set($context.responseOverride.status = 404)\r\n #end"
+              \"data\": {\r\n 
+              \"type\": \"ProductInformation\",\r\n 
+              \"id\": \"$inputRoot.Items[0].ProductID.S\",\r\n 
+              \"attributes\": {\r\n 
+              \"SKUInformation\": {\r\n \r\n 
+              \"productId\": \"$inputRoot.Items[0].ProductID.S\",\r\n 
+              \"skuNumber\": \"$inputRoot.Items[0].SKUNumber.S\",\r\n 
+              \"SKUDetails\": {\r\n\t #if($inputRoot.Items[0].data.M.SKUName.S.toString() != \"\")\r\n\t\t 
+              \"skuName\": \"$inputRoot.Items[0].data.M.SKUName.S\"\r\n\t #end\r\n\t 
+              #if($inputRoot.Items[0].data.M.SKUDescription.S.toString() != \"\")\r\n\t\t,\r\n\t\t 
+              \"skuDescription\": \"$inputRoot.Items[0].data.M.SKUDescription.S\"\r\n\t 
+              #end\r\n\t
+              #if($inputRoot.Items[0].data.M.SKUInventory.S.toString() != \"\")\r\n\t\t,\r\n\t\t 
+              \"inventoryStatus\": \"$inputRoot.Items[0].data.M.SKUInventory.S\"\r\n\t 
+              #end\r\n\t\t 
+              #if($inputRoot.Items[0].data.M.SKUPrices.L != \"\")\r\n\t\t,\r\n\t\t 
+              #set($skuPrices = $inputRoot.Items[0].data.M.get(\"SKUPrices\").L)\r\n\t\t 
+              #foreach($skuPrice in $skuPrices)\r\n\t\t 
+              \"skuPrice\" : {\r\n\t\t\t\r\n\t\t\t\t
+              \"currencyCode\": $skuPrice.M.CurrencyCode.L[0].S,\r\n\t\t\t\r\n\t\t\t
+              #if($skuPrice.M.OnSaleDate.L[0].S.toString() == \"\")\r\n\t\t\t\t
+              \"onSaleDate\": \"\",\r\n\t\t\t
+              #end \r\n\t\t\t
+              #if($skuPrice.M.OnSaleDate.L[0].S.toString() != \"\")\r\n\t\t\t\t
+              \"onSaleDate\": $skuPrice.M.OnSaleDate.L[0].S,\r\n\t\t\t
+              #end\r\n\t\t\t 
+              \"amount\": $skuPrice.M.Amount.L[0].S,\r\n\t\t\t
+              #if($skuPrice.M.OffSaleDate.L[0].S.toString() != \"\")\r\n\t\t\t\t
+              \"offSaleDate\": $skuPrice.M.OnSaleDate.L[0].S,\r\n\t\t\t
+              #end\r\n\t\t\t
+              #if($skuPrice.M.OffSaleDate.L[0].S.toString() == \"\")\r\n\t\t\t\t
+              \"offSaleDate\": \"\",\r\n\t\t\t#end\r\n\t\t }\r\n\t\t 
+              #end\r\n\t 
+              #end\r\n }\r\n  \r\n }\r\n }\r\n }\r\n }\r\n 
+              #set($context.responseOverride.status = 200)\r\n #else\r\n #set($context.responseOverride.status = 404)\r\n #end\r\n \r\n "
         requestTemplates:
           application/json: "{\r\n   
             \"TableName\": \"${DYNAMO_PRODUCT_TABLE}\",\r\n   
