@@ -169,7 +169,6 @@ jobs:
           sleep 10
           echo "Sending request to API gateway"
           curl -X GET "https://rw6e59xnkd.execute-api.us-east-1.amazonaws.com/dev/10000/123" -o get_response.json
-          echo $response
           output=$(diff -u <(jq -S . expected_output.json) <(jq -S . get_response.json))
 
           if [ $? -eq 0 ]; then
