@@ -155,12 +155,12 @@ jobs:
   end-to-end-tests:
     needs: ['deploy-service-dev-stage']
     runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: "${{ secrets.E2E_SECRET_ID }}"
+      AWS_SECRET_ACCESS_KEY: "${{ secrets.E2E_SECRET_ACCESS_KEY }}"
     steps:
-      - name: Start e2e run
       - uses: actions/checkout@v3
-        env:
-          AWS_ACCESS_KEY_ID: "${{ secrets.E2E_SECRET_ID }}"
-          AWS_SECRET_ACCESS_KEY: "${{ secrets.E2E_SECRET_ACCESS_KEY }}"
+      - name: Start e2e run
         run: |
           cd ./e2e-tests
           echo "Uploading file to S3 bucket"
