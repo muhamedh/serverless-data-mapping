@@ -19,7 +19,6 @@ jobs:
       - run: npm run bootstrap:local
       - run: npm run test
   transpile-and-upload-data-validator:
-    needs: ['run-unit-tests']
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -116,7 +115,7 @@ jobs:
         run: |
           cd ../
   deploy-service-dev-stage:
-    needs: ['transpile-and-upload-data-validator', 'transpile-and-upload-data-mapping', 'transpile-and-upload-stream-processor']
+    needs: ['transpile-and-upload-data-validator', 'transpile-and-upload-data-mapping', 'transpile-and-upload-stream-processor', 'run-unit-tests']
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
