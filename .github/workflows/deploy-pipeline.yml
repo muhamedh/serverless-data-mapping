@@ -9,7 +9,7 @@ env:
   AWS_DEFAULT_REGION: "${{ vars.AWS_DEFAULT_REGION }}"
 
 jobs:
-  run-unit-tests:
+  run-unit-tests: 
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -19,6 +19,7 @@ jobs:
       - run: npm run bootstrap:local
       - run: npm run test
   transpile-and-upload-data-validator:
+    needs: ['run-unit-tests']
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -50,12 +51,6 @@ jobs:
       - name: Test up dir
         run: |
           cd ../
-
-      # - name: Trigger TFC run
-      #   env:
-      #     tfc_token: ${{ secrets.TF_API_TOKEN }}
-      #   run: |
-      #     curl --header "Authorization:Bearer $tfc_token" --header "Content-Type:application/vnd.api+json" --request POST --data @infrastructure/json_payload.json https://app.terraform.io/api/v2/runs
   transpile-and-upload-data-mapping:
     runs-on: ubuntu-latest
     steps:

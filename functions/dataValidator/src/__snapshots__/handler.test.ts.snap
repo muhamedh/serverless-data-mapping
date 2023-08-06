@@ -28,3 +28,10 @@ exports[`component tests for dataValidator lambda function should send message t
   "QueueUrl": undefined,
 }
 `;
+
+exports[`component tests for dataValidator lambda function should send message to eventbridge due to xml syntax error 1`] = `
+{
+  "Bucket": "arrival-bucket-426643868142",
+  "Key": "product/123456789_1.xml",
+}
+`;

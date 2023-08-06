@@ -68,7 +68,8 @@ describe("component tests for dataValidator lambda function", () => {
         {
           Source: "data-validator",
           DetailType: "Invalid XML format.",
-          Detail: JSON.stringify({ timeOfEvent: mockISOString }),
+          Detail: JSON.stringify({ timeOfEvent: mockISOString, objectKey: "product/123456789_1.xml" }),
+          EventBusName: undefined,
         },
       ],
     });
@@ -102,7 +103,8 @@ describe("component tests for dataValidator lambda function", () => {
         {
           Source: "data-validator",
           DetailType: "Invalid XML format.",
-          Detail: JSON.stringify({ timeOfEvent: mockISOString }),
+          Detail: JSON.stringify({ timeOfEvent: mockISOString, objectKey: "product/123456789_1.xml" }),
+          EventBusName: undefined,
         },
       ],
     });
