@@ -13,6 +13,7 @@ module "data_validator" {
   create_current_version_allowed_triggers = false
   cloudwatch_logs_retention_in_days       = 5
   maximum_retry_attempts                  = 0
+  timeout = 15
   allowed_triggers = {
     sqs = {
       service    = "sqs"
@@ -59,17 +60,17 @@ resource "aws_iam_policy" "data_validator_policy" {
       "Statement" = [
         {
           "Effect"   = "Allow"
-          "Action"   = "s3:GetObject"
+          "Action"   = ["s3:GetObject","s3:ListBucket"]
           "Resource" = "${aws_s3_bucket.arrival_bucket.arn}/*"
         },
         {
           "Effect"   = "Allow"
-          "Action"   = "s3:PutObject"
+          "Action"   = ["s3:PutObject", "s3:ListBucket"]
           "Resource" = "${aws_s3_bucket.archive_bucket.arn}/*"
         },
         {
           "Effect"   = "Allow"
-          "Action"   = "s3:PutObject"
+          "Action"   = ["s3:PutObject", "s3:ListBucket"]
           "Resource" = "${aws_s3_bucket.error_bucket.arn}/*"
         },
         {

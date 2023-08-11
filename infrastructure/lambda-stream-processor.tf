@@ -43,7 +43,9 @@ module "stream_processor" {
     "arn:aws:iam::aws:policy/service-role/AWSLambdaDynamoDBExecutionRole",
     "${aws_iam_policy.stream_processor_policy.arn}"
   ]
-
+  environment_variables = {
+    event_bus_name         = module.eventbridge.eventbridge_bus_name
+  }
 }
 #Created Policy for IAM Role
 resource "aws_iam_policy" "stream_processor_policy" {
